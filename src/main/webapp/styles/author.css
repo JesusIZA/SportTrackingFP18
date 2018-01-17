@@ -1,0 +1,69 @@
+.content {
+	margin: 10px 0;
+	background: rgba(0,0,0,.7);
+	border-radius: 5px;
+}
+
+label, input, a {
+	padding: 0;
+	margin: 7px;
+	margin-left: 12px;
+	margin-right: 0;
+	float: left;
+	font-size: 12pt;
+}
+label {
+	color: red;
+	font-size: 14pt;
+	margin: 0;
+	margin-top: 5px;
+}
+.content p {
+	color: red;
+	font-size: 13pt;
+	margin-left: 15px;
+}
+a{
+	text-shadow: none;
+}
+.button, a{
+	background: white;
+	font-size: 12pt;
+	color: #333;
+	border: solid 3px #333;
+	border-radius: 3px;
+}
+a {
+	width: 237px;
+}
+.button {
+	width: 243px;
+}
+.button:hover, a:hover{
+	background: #ccc;
+	color: black;
+	border: solid 3px black;
+	cursor: pointer;
+}
+br {
+	font-size: 25pt;
+}
+.tips{
+	margin-top: 20px;
+	margin-right: 100px;
+	float: right;
+	width: 600px;
+	border: dotted 3px red;
+	border-radius: 3px;
+	text-align: left;
+}
+.data {
+	background: rgba(0,0,0,.5);
+	margin-left: 100px;
+	padding-left: 30px;
+	float: left;
+	width: 300px;
+}
+.wordl {
+	margin-left: 12px;
+}

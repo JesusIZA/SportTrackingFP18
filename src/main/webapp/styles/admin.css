@@ -1,0 +1,11 @@
+.admin {
+    width: 1200px;
+    background-color: rgba(0,0,0,.7);
+    border-radius: 5px;
+}
+strong a {
+    color: greenyellow;
+}
+a:hover {
+    color: yellow;
+}
