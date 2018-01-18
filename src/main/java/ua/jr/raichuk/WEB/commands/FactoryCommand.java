@@ -1,7 +1,10 @@
 package ua.jr.raichuk.WEB.commands;
 
 import ua.jr.raichuk.WEB.commands.admindo.food.*;
+import ua.jr.raichuk.WEB.commands.admindo.link.*;
 import ua.jr.raichuk.WEB.commands.admindo.norm.*;
+import ua.jr.raichuk.WEB.commands.admindo.profile.*;
+import ua.jr.raichuk.WEB.commands.admindo.user.*;
 import ua.jr.raichuk.WEB.commands.admindo.waseaten.*;
 import ua.jr.raichuk.WEB.commands.userdo.*;
 
@@ -46,6 +49,27 @@ public class FactoryCommand {
     public static final String ADMIN_INSERT_WASEATEN = "admininsertwaseaten";
     public static final String ADMIN_EDIT_WASEATEN = "admineditwaseaten";
     public static final String ADMIN_DELETE_WASEATEN = "admindeletewaseaten";
+    //link
+    public static final String ADMIN_SHOW_LIST_LINK = "adminshowlistlink";
+    public static final String ADMIN_SHOW_EDIT_LINK_FORM = "adminshoweditlinkform";
+    public static final String ADMIN_SHOW_NEW_LINK_FORM = "adminshownewlinkform";
+    public static final String ADMIN_INSERT_LINK = "admininsertlink";
+    public static final String ADMIN_EDIT_LINK = "admineditlink";
+    public static final String ADMIN_DELETE_LINK = "admindeletelink";
+    //user
+    public static final String ADMIN_SHOW_LIST_USER = "adminshowlistuser";
+    public static final String ADMIN_SHOW_EDIT_USER_FORM = "adminshowedituserform";
+    public static final String ADMIN_SHOW_NEW_USER_FORM = "adminshownewuserform";
+    public static final String ADMIN_INSERT_USER = "admininsertuser";
+    public static final String ADMIN_EDIT_USER = "adminedituser";
+    public static final String ADMIN_DELETE_USER = "admindeleteuser";
+    //profile
+    public static final String ADMIN_SHOW_LIST_PROFILE = "adminshowlistprofile";
+    public static final String ADMIN_SHOW_EDIT_PROFILE_FORM = "adminshoweditprofileform";
+    public static final String ADMIN_SHOW_NEW_PROFILE_FORM = "adminshownewprofileform";
+    public static final String ADMIN_INSERT_PROFILE = "admininsertprofile";
+    public static final String ADMIN_EDIT_PROFILE = "admineditprofile";
+    public static final String ADMIN_DELETE_PROFILE = "admindeleteprofile";
 
 
     private Map<String,Command> commandMap = new HashMap<>();
@@ -58,7 +82,7 @@ public class FactoryCommand {
         commandMap.put(STATISTICS, new StatisticsCommand());
         commandMap.put(SHOW_PROFILE, new ShowProfileCommand());
         commandMap.put(EDIT_PROFILE, new EditProfileCommand());
-        commandMap.put(DELETE_PROFILE, new DeleteProfileCommand());
+        commandMap.put(DELETE_PROFILE, new DeleteAllProfileCommand());
         commandMap.put(EDIT_USER, new EditUserCommand());
         commandMap.put(ADD_FOOD, new AddFoodCommand());
         commandMap.put(ADD_FOOD_TODAY, new AddFoodTodayCommand());
@@ -85,6 +109,27 @@ public class FactoryCommand {
         commandMap.put(ADMIN_INSERT_WASEATEN, new InsertWasEatenCommand());
         commandMap.put(ADMIN_EDIT_WASEATEN, new UpdateWasEatenCommand());
         commandMap.put(ADMIN_DELETE_WASEATEN, new DeleteWasEatenCommand());
+        //link
+        commandMap.put(ADMIN_SHOW_LIST_LINK, new ShowListLinkCommand());
+        commandMap.put(ADMIN_SHOW_EDIT_LINK_FORM, new ShowEditLinkFormCommand());
+        commandMap.put(ADMIN_SHOW_NEW_LINK_FORM, new ShowNewLinkFormCommand());
+        commandMap.put(ADMIN_INSERT_LINK, new InsertLinkCommand());
+        commandMap.put(ADMIN_EDIT_LINK, new UpdateLinkCommand());
+        commandMap.put(ADMIN_DELETE_LINK, new DeleteLinkCommand());
+        //user
+        commandMap.put(ADMIN_SHOW_LIST_USER, new ShowListUserCommand());
+        commandMap.put(ADMIN_SHOW_EDIT_USER_FORM, new ShowEditUserFormCommand());
+        commandMap.put(ADMIN_SHOW_NEW_USER_FORM, new ShowNewUserFormCommand());
+        commandMap.put(ADMIN_INSERT_USER, new InsertUserCommand());
+        commandMap.put(ADMIN_EDIT_USER, new UpdateUserCommand());
+        commandMap.put(ADMIN_DELETE_USER, new DeleteUserCommand());
+        //profile
+        commandMap.put(ADMIN_SHOW_LIST_PROFILE, new ShowListProfileCommand());
+        commandMap.put(ADMIN_SHOW_EDIT_PROFILE_FORM, new ShowEditProfileFormCommand());
+        commandMap.put(ADMIN_SHOW_NEW_PROFILE_FORM, new ShowNewProfileFormCommand());
+        commandMap.put(ADMIN_INSERT_PROFILE, new InsertProfileCommand());
+        commandMap.put(ADMIN_EDIT_PROFILE, new UpdateProfileCommand());
+        commandMap.put(ADMIN_DELETE_PROFILE, new DeleteProfileCommand());
     }
 
     public static FactoryCommand getInstance(){

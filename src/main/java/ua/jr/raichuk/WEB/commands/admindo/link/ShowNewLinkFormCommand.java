@@ -1,13 +1,13 @@
-package ua.jr.raichuk.WEB.commands.admindo.food;
+package ua.jr.raichuk.WEB.commands.admindo.link;
 
 import ua.jr.raichuk.WEB.commands.admindo.AdminShowNewFormCommand;
 
 /**
  * @author Jesus Raichuk
  */
-public class ShowNewFoodFormCommand extends AdminShowNewFormCommand {
+public class ShowNewLinkFormCommand extends AdminShowNewFormCommand {
     @Override
     protected String getRedirect() {
-        return "admin/foodForm.jsp";
+        return "admin/linkForm.jsp";
     }
 }

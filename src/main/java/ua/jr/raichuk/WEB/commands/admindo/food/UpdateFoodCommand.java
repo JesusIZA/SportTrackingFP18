@@ -38,7 +38,8 @@ public class UpdateFoodCommand extends AdminUpdateCommand<Food> {
         Double fats = Double.valueOf(request.getParameter("fatsF"));
         Double carbohydrates = Double.valueOf(request.getParameter("carbohydratesF"));
 
-        if(FoodValidator.isValid(name, calories, proteins, fats, carbohydrates)){
+        if(FoodValidator.isValid(name, calories, proteins, fats, carbohydrates) &&
+                FoodValidator.isIdFExisting(id)){
             Food food = new Food(id, name, calories, proteins, fats, carbohydrates);
             return food;
         } else {

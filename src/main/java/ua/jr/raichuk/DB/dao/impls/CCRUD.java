@@ -100,7 +100,6 @@ public abstract class CCRUD<T> extends CRUD<T> {
             ResultSet resultSet = statement.executeQuery(sql);
             List<Integer> ids = new LinkedList<Integer>();
             while (resultSet.next()){
-                T entity = null;
                 ids.add(resultSet.getInt(getTableIdRowName()));
             }
             for (int i = 0; i<ids.size(); i++){
@@ -120,6 +119,34 @@ public abstract class CCRUD<T> extends CRUD<T> {
             }
         }
         return lastId;
+    }
+
+    @Override
+    public List<Integer> getAllIds(Connection con) throws DBException {
+        Connection connection = con;
+
+        String sql = "SELECT " + getTableIdRowName() + " FROM " + getTableName();
+        System.out.println(sql);
+        List<Integer> ids = new ArrayList<Integer>();
+        Statement statement = null;
+        try{
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                ids.add(resultSet.getInt(getTableIdRowName()));
+            }
+        } catch (Exception e){
+            throw new DBException("Not found");
+        } finally {
+            if(statement != null){
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ids;
     }
 
     @Override

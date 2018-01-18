@@ -29,7 +29,8 @@ public class UpdateNormCommand extends AdminUpdateCommand<Norm> {
         Integer calories = Integer.valueOf(request.getParameter("caloriesN"));
         Integer proteins = Integer.valueOf(request.getParameter("proteinsN"));
 
-        if(NormValidator.isValid(calories, proteins)){
+        if(NormValidator.isValid(calories, proteins) &&
+                NormValidator.isIdNExisting(id)){
             Norm entity = new Norm(id, calories, proteins);
             return entity;
         } else {

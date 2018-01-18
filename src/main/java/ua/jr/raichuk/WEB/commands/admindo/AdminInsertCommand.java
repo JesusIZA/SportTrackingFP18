@@ -1,6 +1,5 @@
 package ua.jr.raichuk.WEB.commands.admindo;
 
-import jdk.nashorn.internal.runtime.regexp.joni.constants.EncloseType;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.Exceptions.DataException;
 import ua.jr.raichuk.Exceptions.TransactionException;

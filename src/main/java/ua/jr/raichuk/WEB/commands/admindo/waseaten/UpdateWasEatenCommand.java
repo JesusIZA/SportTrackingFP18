@@ -5,6 +5,8 @@ import ua.jr.raichuk.DB.entities.impls.WasEaten;
 import ua.jr.raichuk.Exceptions.DataException;
 import ua.jr.raichuk.WEB.commands.FactoryCommand;
 import ua.jr.raichuk.WEB.commands.admindo.AdminUpdateCommand;
+import ua.jr.raichuk.WEB.validators.FoodValidator;
+import ua.jr.raichuk.WEB.validators.ProfileValidator;
 import ua.jr.raichuk.WEB.validators.WasEatenValidator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +33,10 @@ public class UpdateWasEatenCommand extends AdminUpdateCommand<WasEaten> {
         Integer idF = Integer.valueOf(request.getParameter("idFWE"));
         Date date = Date.valueOf(request.getParameter("dateWE"));
 
-        if(WasEatenValidator.isValid(date)){
+        if(WasEatenValidator.isValid(date) &&
+                WasEatenValidator.isIdWEExisting(id)&&
+                FoodValidator.isIdFExisting(idF) &&
+                ProfileValidator.isIdPExisting(idP)){
             WasEaten entity = new WasEaten(id, idP, idF, date);
             return entity;
         } else {

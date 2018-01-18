@@ -32,7 +32,7 @@ public class LoginCommand implements Command {
                         HttpSession session = request.getSession();
                         session.setAttribute("login", login);
                         if(Authentication.isAdmin(session)) {
-                            FactoryCommand.getInstance().getCommand(FactoryCommand.ADMIN_SHOW_LIST_FOOD).execute(request, response);
+                            FactoryCommand.getInstance().getCommand(FactoryCommand.ADMIN_SHOW_LIST_USER).execute(request, response);
                         } else {
                             FactoryCommand.getInstance().getCommand(FactoryCommand.TRACKING).execute(request, response);
                         }

@@ -14,7 +14,7 @@
 	<span class="data">
 		<a href="${pageContext.request.contextPath}/registration.jsp">Registration</a>
 		<br>
-		<form name="loginF" method="post" action="${pageContext.request.contextPath}/do">
+		<form name="loginF" method="get" action="${pageContext.request.contextPath}/do">
 			<input id="command" name="command" value="login" hidden="true">
 			<input type="text" size="30" name="login" id="login" maxlength="56" placeholder="Login">
 			<label for="login">*</label>

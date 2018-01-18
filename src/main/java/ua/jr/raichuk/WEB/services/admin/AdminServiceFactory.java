@@ -11,6 +11,7 @@ public abstract class AdminServiceFactory {
     private static NormService normService = new NormService();
     private static UserService userService = new UserService();
     private static ProfileService profileService = new ProfileService();
+    private static LinkService linkService = new LinkService();
 
     public static AdminService getAdminService(Entity entity) {
         switch (entity.getClassName()){
@@ -18,6 +19,8 @@ public abstract class AdminServiceFactory {
                 return userService;
             case "Food":
                 return foodService;
+            case "Link":
+                return linkService;
             case "Profile":
                 return profileService;
             case "WasEaten":

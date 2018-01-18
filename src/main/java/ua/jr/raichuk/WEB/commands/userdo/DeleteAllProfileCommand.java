@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * @author Jesus Raichuk
  */
-public class DeleteProfileCommand implements Command {
+public class DeleteAllProfileCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {

@@ -7,7 +7,7 @@ import ua.jr.raichuk.WEB.commands.Command;
 import ua.jr.raichuk.WEB.commands.FactoryCommand;
 import ua.jr.raichuk.WEB.services.admin.AdminServiceFactory;
 import ua.jr.raichuk.WEB.services.admin.ProfileService;
-import ua.jr.raichuk.WEB.validators.EnterDataValidator;
+import ua.jr.raichuk.WEB.validators.ProfileValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,21 +43,7 @@ public class EditProfileCommand implements Command {
             }
 
             try {
-                if (!EnterDataValidator.isValidNameOrSurname(name)) {
-                    throw new DataException("Name is incorrect");
-                } else if (!EnterDataValidator.isValidNameOrSurname(surname)) {
-                    throw new DataException("Surname is incorrect");
-                }  else if (!EnterDataValidator.isValidSex(sex)) {
-                    throw new DataException("Sex is incorrect");
-                } else if (!EnterDataValidator.isValidDate(birthday)) {
-                    throw new DataException("Birthday is incorrect");
-                } else if (!EnterDataValidator.isValidHeightOrWeight(height)) {
-                    throw new DataException("Height is incorrect");
-                } else if (!EnterDataValidator.isValidHeightOrWeight(weight)) {
-                    throw new DataException("Weight is incorrect");
-                } else if (!EnterDataValidator.isValidActiveTime(activeTime)) {
-                    throw new DataException("Active time is incorrect");
-                } else {
+                if (ProfileValidator.isValid(name, surname, sex, birthday, height, weight, activeTime)){
 
                     Profile profile = new Profile();
                     profile.setName(name);
@@ -75,6 +61,8 @@ public class EditProfileCommand implements Command {
                     request.getSession().removeAttribute("name");
 
                     FactoryCommand.getInstance().getCommand(FactoryCommand.TRACKING).execute(request, response);
+                } else {
+                    throw new DataException("Dats is incorrect");
                 }
             } catch (DataException e) {
                 request.setAttribute("error", e.getMessage());

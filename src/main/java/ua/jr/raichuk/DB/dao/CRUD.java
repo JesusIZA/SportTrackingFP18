@@ -15,6 +15,8 @@ public abstract class CRUD<T> {
 
     public abstract int getLastId(Connection con) throws DBException;
 
+    public abstract List<Integer> getAllIds(Connection con) throws DBException;
+
     public abstract T findById(int id, Connection con) throws DBException;
 
     //update

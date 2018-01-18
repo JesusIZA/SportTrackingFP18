@@ -1,20 +1,20 @@
-package ua.jr.raichuk.WEB.commands.admindo.food;
+package ua.jr.raichuk.WEB.commands.admindo.link;
 
 import ua.jr.raichuk.DB.entities.Entity;
-import ua.jr.raichuk.DB.entities.impls.Food;
+import ua.jr.raichuk.DB.entities.impls.Link;
 import ua.jr.raichuk.WEB.commands.admindo.AdminShowEditFormCommand;
 
 /**
  * @author Jesus Raichuk
  */
-public class ShowEditFoodFormCommand extends AdminShowEditFormCommand<Food> {
+public class ShowEditLinkFormCommand extends AdminShowEditFormCommand<Link> {
     @Override
     protected Entity getEntity() {
-        return new Food();
+        return new Link();
     }
 
     @Override
     protected String getRedirect() {
-        return "admin/foodForm.jsp";
+        return "admin/linkForm.jsp";
     }
 }

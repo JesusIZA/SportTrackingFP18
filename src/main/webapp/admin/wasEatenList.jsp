@@ -13,13 +13,15 @@
     <h3>
         <a href="${pageContext.request.contextPath}/do?command=adminshownewwaseatenform"><strong>Add New Was eaten</strong></a>
         &nbsp;
-        <a href="#">List Users</a>
+        <a href="${pageContext.request.contextPath}/do?command=adminshowlistuser">List Users</a>
         &nbsp;
-        <a href="#">List Profiles</a>
+        <a href="${pageContext.request.contextPath}/do?command=adminshowlistprofile">List Profiles</a>
         &nbsp;
         <a href="${pageContext.request.contextPath}/do?command=adminshowlistnorm">List Norms</a>
         &nbsp;
         <a href="${pageContext.request.contextPath}/do?command=adminshowlistfood">List Foods</a>
+        &nbsp;
+        <a href="${pageContext.request.contextPath}/do?command=adminshowlistlink">List Links</a>
 
     </h3>
 <div align="center">

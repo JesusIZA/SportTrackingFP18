@@ -1,6 +1,6 @@
 /*USERS*/
 INSERT INTO USERS (login, password) VALUES
-  ('Login1', '12'),
+  ('Jesus', '12'),
   ('Login2', 'pass2'),
   ('Login3', 'pass3'),
   ('Admin', '12'),

@@ -54,6 +54,27 @@ public class SecurityConfiguration {
         grant.put(FactoryCommand.ADMIN_INSERT_WASEATEN, ADMIN);
         grant.put(FactoryCommand.ADMIN_EDIT_WASEATEN, ADMIN);
         grant.put(FactoryCommand.ADMIN_DELETE_WASEATEN, ADMIN);
+        //link
+        grant.put(FactoryCommand.ADMIN_SHOW_LIST_LINK, ADMIN);
+        grant.put(FactoryCommand.ADMIN_SHOW_NEW_LINK_FORM, ADMIN);
+        grant.put(FactoryCommand.ADMIN_SHOW_EDIT_LINK_FORM, ADMIN);
+        grant.put(FactoryCommand.ADMIN_INSERT_LINK, ADMIN);
+        grant.put(FactoryCommand.ADMIN_EDIT_LINK, ADMIN);
+        grant.put(FactoryCommand.ADMIN_DELETE_LINK, ADMIN);
+        //user
+        grant.put(FactoryCommand.ADMIN_SHOW_LIST_USER, ADMIN);
+        grant.put(FactoryCommand.ADMIN_SHOW_NEW_USER_FORM, ADMIN);
+        grant.put(FactoryCommand.ADMIN_SHOW_EDIT_USER_FORM, ADMIN);
+        grant.put(FactoryCommand.ADMIN_INSERT_USER, ADMIN);
+        grant.put(FactoryCommand.ADMIN_EDIT_USER, ADMIN);
+        grant.put(FactoryCommand.ADMIN_DELETE_USER, ADMIN);
+        //profile
+        grant.put(FactoryCommand.ADMIN_SHOW_LIST_PROFILE, ADMIN);
+        grant.put(FactoryCommand.ADMIN_SHOW_NEW_PROFILE_FORM, ADMIN);
+        grant.put(FactoryCommand.ADMIN_SHOW_EDIT_PROFILE_FORM, ADMIN);
+        grant.put(FactoryCommand.ADMIN_INSERT_PROFILE, ADMIN);
+        grant.put(FactoryCommand.ADMIN_EDIT_PROFILE, ADMIN);
+        grant.put(FactoryCommand.ADMIN_DELETE_PROFILE, ADMIN);
     }
 
     public String security(String command){
