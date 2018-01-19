@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.userdo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.impls.Food;
 import ua.jr.raichuk.Exceptions.DataException;
 import ua.jr.raichuk.Exceptions.TransactionException;
@@ -18,6 +19,7 @@ import java.util.*;
  * @author Jesus Raichuk
  */
 public class StatisticsCommand implements Command {
+    private static Logger LOGGER = Logger.getLogger(StatisticsCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("login");
@@ -59,8 +61,6 @@ public class StatisticsCommand implements Command {
                 StatisticsService statisticsService = StatisticsService.getService();
                 dates = statisticsService.getAllDatesRangeByLogin(login, from, to);
                 foods = statisticsService.getFoodsByDateRangeAndLogin(login, from, to);
-
-
 
                 List<Date> datesL = new ArrayList<Date>();
 
@@ -105,9 +105,6 @@ public class StatisticsCommand implements Command {
 
                 request.getSession().setAttribute("from", from);
                 request.getSession().setAttribute("to", to);
-
-                System.out.println("test=" + (Date)request.getSession().getAttribute("from"));
-
                 request.getSession().setAttribute("pos", pos);
 
                 request.setAttribute("date", date);
@@ -115,9 +112,11 @@ public class StatisticsCommand implements Command {
                 request.getRequestDispatcher("statistics.jsp").forward(request, response);
             }
         } catch (DataException e) {
+            LOGGER.debug("Command.User->Data (StatisticsCommand.execute()) exception : Data is incorrect!");
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request,response);
         } catch (TransactionException e) {
+            LOGGER.error("DB.DAO(CRUD)->Command.User (StatisticsCommand.execute()) exception : read error!");
             request.setAttribute("error", "Server error");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         }

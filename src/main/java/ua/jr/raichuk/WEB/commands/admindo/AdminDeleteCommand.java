@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.admindo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.Exceptions.TransactionException;
 import ua.jr.raichuk.WEB.commands.Command;
@@ -16,6 +17,7 @@ import java.io.IOException;
  * @author Jesus Raichuk
  */
 public abstract class AdminDeleteCommand<T> implements Command {
+    private static Logger LOGGER = Logger.getLogger(AdminDeleteCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -26,9 +28,11 @@ public abstract class AdminDeleteCommand<T> implements Command {
             FactoryCommand.getInstance().getCommand(getRedirect()).execute(request, response);
 
         } catch (TransactionException e) {
+            LOGGER.error("DB.DAO(CRUD)->Command.Admin (AdminDeleteCommand.execute()) exception : delete error!");
             request.setAttribute("error", "You must before delete all refers on this");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         } catch (Exception e) {
+            LOGGER.debug("Command.Admin->Data (AdminDeleteCommand.execute()) exception : Data is incorrect!");
             request.setAttribute("error", "Data is illegal");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         }

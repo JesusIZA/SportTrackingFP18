@@ -7,9 +7,7 @@ import java.sql.SQLException;
  */
 public class ConnectionException extends Exception {
     public ConnectionException(NullPointerException e) {
-
     }
     public ConnectionException(SQLException e) {
-
     }
 }

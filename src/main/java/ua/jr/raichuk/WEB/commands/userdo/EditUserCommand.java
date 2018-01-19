@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.userdo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.impls.User;
 import ua.jr.raichuk.Exceptions.DataException;
 import ua.jr.raichuk.Exceptions.TransactionException;
@@ -20,6 +21,7 @@ import java.util.Objects;
  * @author Jesus Raichuk
  */
 public class EditUserCommand implements Command {
+    private static Logger LOGGER = Logger.getLogger(EditUserCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -48,13 +50,16 @@ public class EditUserCommand implements Command {
                 } else
                     throw new DataException("Passwords or login is incorrect");
             } catch (DataException e) {
+                LOGGER.debug("Command.Admin->Data (EditUserCommand.execute()) exception : Data is incorrect!");
                 request.setAttribute("error", e.getMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             } catch (TransactionException e1) {
+                LOGGER.error("DB.DAO(CRUD)->Command.User (EditUserCommand.execute()) exception : insert error!");
                 request.setAttribute("error", "Server error");
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         } catch (IllegalArgumentException e2) {
+            LOGGER.debug("Command.User->Data (EditUserCommand.execute()) exception : Data is illegal!");
             request.setAttribute("error", "Data is illegal");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }

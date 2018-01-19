@@ -1,7 +1,9 @@
 package ua.jr.raichuk.DB.dao.impls;
 
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.CRUD;
+import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.Exceptions.DBException;
 
 import java.sql.*;
@@ -15,6 +17,8 @@ import java.util.List;
  * @author Jesus Raichuk
  */
 public abstract class CCRUD<T> extends CRUD<T> {
+    private static Logger LOGGER = Logger.getLogger(CCRUD.class);
+
     @Override
     public void add(T entity, Connection con) throws DBException{
         Connection connection = con;
@@ -37,17 +41,16 @@ public abstract class CCRUD<T> extends CRUD<T> {
                 sql += "?";
         }
         sql += ")";
-        System.out.println(sql);
 
         try{
             preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement = getFullSecondaryValuesPreparedStatement(preparedStatement, entity, 1);
-
+            LOGGER.debug(preparedStatement);
             preparedStatement.executeUpdate();
             parseResultSetGeneratedKeys(preparedStatement.getGeneratedKeys(), entity);
         } catch (Exception e){
-            e.printStackTrace();
+            LOGGER.error("Connection->SQL (CCRUD.add()) exception : " + ((Entity)entity).getClassName() + " not added!");
             throw new DBException("Not added");
         }
     }
@@ -58,29 +61,23 @@ public abstract class CCRUD<T> extends CRUD<T> {
         Connection connection = con;
 
         List<T> entities = new ArrayList<T>();
-
         String sql = "SELECT * FROM " + getTableName();
-        System.out.println(sql);
 
         Statement statement = null;
         try{
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
+            LOGGER.debug(sql);
             while (resultSet.next()){
                 T entity = null;
                 entity = fillEntity(resultSet);
                 entities.add(entity);
             }
+            if(statement != null)
+                statement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (CCRUD.findAll()) exception : for Table=" + getTableName() + " findAll()!");
             throw new DBException("Not found");
-        } finally {
-            if(statement != null){
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return entities;
     }
@@ -92,12 +89,12 @@ public abstract class CCRUD<T> extends CRUD<T> {
         int lastId = 0;
 
         String sql = "SELECT " + getTableIdRowName() + " FROM " + getTableName();
-        System.out.println(sql);
 
         Statement statement = null;
         try{
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
+            LOGGER.debug(sql);
             List<Integer> ids = new LinkedList<Integer>();
             while (resultSet.next()){
                 ids.add(resultSet.getInt(getTableIdRowName()));
@@ -107,16 +104,11 @@ public abstract class CCRUD<T> extends CRUD<T> {
                     lastId = ids.get(i);
                 }
             }
+            if(statement != null)
+                statement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (CCRUD.getLastId()) exception : for Table=" + getTableName() + " getLastId()");
             throw new DBException("Not found");
-        } finally {
-            if(statement != null){
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return lastId;
     }
@@ -126,25 +118,20 @@ public abstract class CCRUD<T> extends CRUD<T> {
         Connection connection = con;
 
         String sql = "SELECT " + getTableIdRowName() + " FROM " + getTableName();
-        System.out.println(sql);
         List<Integer> ids = new ArrayList<Integer>();
         Statement statement = null;
         try{
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
+            LOGGER.debug(sql);
             while (resultSet.next()){
                 ids.add(resultSet.getInt(getTableIdRowName()));
             }
+            if(statement != null)
+                statement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (CCRUD.getLastId()) exception : for Table=" + getTableName() + " getAllIds()");
             throw new DBException("Not found");
-        } finally {
-            if(statement != null){
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return ids;
     }
@@ -155,27 +142,22 @@ public abstract class CCRUD<T> extends CRUD<T> {
 
         PreparedStatement preparedStatement = null;
         String sql = "SELECT * FROM " + getTableName() + " WHERE " + getTableIdRowName() + "=?";
-        System.out.println(sql);
 
         T entity = null;
         try{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, (Integer)id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            LOGGER.debug(preparedStatement);
             resultSet.beforeFirst();
             resultSet.next();
             entity = fillEntity(resultSet);
             preparedStatement.execute();
+            if(preparedStatement != null)
+                preparedStatement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (CCRUD.findById()) exception : for Table=" + getTableName() + " findById() id=" + id);
             new DBException("Not found");
-        } finally {
-            if(preparedStatement != null){
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return entity;
     }
@@ -197,25 +179,19 @@ public abstract class CCRUD<T> extends CRUD<T> {
             }
         }
         sql += "WHERE " + getTableIdRowName() + "=?";
-        System.out.println(sql);
 
         try{
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement = getFullSecondaryValuesPreparedStatement(preparedStatement , entity, 1);
             preparedStatement = getFullIdValuePreparedStatement(preparedStatement, entity, getTableRowsNames().size());
-
+            LOGGER.debug(preparedStatement);
             preparedStatement.executeUpdate();
+            if(preparedStatement != null)
+                preparedStatement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (CCRUD.update()) exception : " + ((Entity)entity).getClassName() + " not updated!");
             throw new DBException("Not updated");
-        } finally {
-            if(preparedStatement != null){
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -224,24 +200,18 @@ public abstract class CCRUD<T> extends CRUD<T> {
         Connection connection = con;
 
         PreparedStatement preparedStatement = null;
-
         String sql = "DELETE FROM " + getTableName() + " WHERE " + getTableIdRowName() + "=?";
-        System.out.println(sql);
 
         try{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, (Integer)id);
+            LOGGER.debug(preparedStatement);
             preparedStatement.executeUpdate();
+            if(preparedStatement != null)
+                preparedStatement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (CCRUD.delete()) exception : for Table=" + getTableName() + " by id=" + id + "!");
             throw new DBException("Not deleted");
-        } finally {
-            if(preparedStatement != null){
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 

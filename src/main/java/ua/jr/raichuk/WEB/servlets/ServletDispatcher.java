@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.servlets;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.WEB.commands.Command;
 import ua.jr.raichuk.WEB.commands.FactoryCommand;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ServletDispatcher extends HttpServlet{
+    private static Logger LOGGER = Logger.getLogger(ServletDispatcher.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,13 +28,13 @@ public class ServletDispatcher extends HttpServlet{
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) {
         FactoryCommand factory = FactoryCommand.getInstance();
         Command command = factory.getCommand((String) req.getParameter("command"));
-        System.out.println(command);
+        LOGGER.debug(command);
         try {
             command.execute(req,resp);
         } catch (ServletException e) {
-            e.printStackTrace();
+            LOGGER.debug("Servlet (ServletDispatcher.processRequest()) exception : " + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.debug("Servlet.IO (ServletDispatcher.processRequest()) exception : " + e.getMessage());
         }
     }
 }

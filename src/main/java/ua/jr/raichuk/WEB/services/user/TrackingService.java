@@ -1,20 +1,24 @@
 package ua.jr.raichuk.WEB.services.user;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.impls.realdao.DAOFactory;
 import ua.jr.raichuk.DB.entities.impls.*;
 import ua.jr.raichuk.DB.transactions.Transaction;
 import ua.jr.raichuk.Exceptions.DBException;
 import ua.jr.raichuk.Exceptions.TransactionException;
+import ua.jr.raichuk.Helpers.lists.PrintLists;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author Jesus Raichuk
  */
 public class TrackingService {
+    private static Logger LOGGER = Logger.getLogger(TrackingService.class);
+
     private static TrackingService service = new TrackingService();
 
     public static TrackingService getService(){
@@ -32,6 +36,7 @@ public class TrackingService {
 
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.DAO (TrackingService.getName()) exception : UtilDAO.findProfileByLogin error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);
@@ -48,6 +53,7 @@ public class TrackingService {
 
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.DAO (TrackingService.getSurname()) exception : UtilDAO.findProfileByLogin error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);
@@ -63,6 +69,7 @@ public class TrackingService {
                 Link link = DAOFactory.getInstance().getUtilDAO().findLinkByLogin(login, connection);
                 ret = (Norm) DAOFactory.getInstance().getCRUD(new Norm()).findById(link.getIdN(), connection);
             } catch (DBException e) {
+                LOGGER.error("DB.DAO,CRUD (TrackingService.getNorm()) exception : UtilDAO,CRUD reading error!");
                 User user = DAOFactory.getInstance().getUtilDAO().findUserByLogin(login, connection);
                 Profile profile = DAOFactory.getInstance().getUtilDAO().findProfileByLogin(login, connection);
                 ret = new Norm();
@@ -89,7 +96,7 @@ public class TrackingService {
         int calories = 0;
         int proteins = 0;
 
-        List<Food> foods = getEatenToday(login);
+        List<Food> foods = getEatenToday(login, 0, 10000);
         for (int i = 0; i < foods.size(); i++) {
             calories += foods.get(i).getCalories();
             proteins += foods.get(i).getProteins();
@@ -100,28 +107,19 @@ public class TrackingService {
         return forNow;
     }
 
-    public List<Food> getEatenToday(String login) throws TransactionException {
-        System.out.println(212);
+    public List<Food> getEatenToday(String login, int start, int quantity) throws TransactionException {
         List<Food> eatenToday = new ArrayList<Food>();
         Connection connection = Transaction.startTransaction();
         try{
-            Date today = Date.valueOf("1900-01-01");
-            today.getTime();
-            today.setTime(new java.util.Date().getTime());
-
-
-            //System.out.println(wsList.get(i).getDateWE().getTime() + " " + today.getTime());
+            Date today = new Date();
 
             Link link = DAOFactory.getInstance().getUtilDAO().findLinkByLogin(login, connection);
 
             List<WasEaten> wsList = DAOFactory.getInstance().getUtilDAO().findWasEatenByProfileId(link.getIdP(), connection);
-            System.out.println(wsList.size());
 
-            for (int i = 0; i < wsList.size(); i++) {
-                System.out.println(wsList.get(i));
-                System.out.println(wsList.get(i).getDateWE().getYear() == today.getYear());
-                System.out.println(wsList.get(i).getDateWE().getMonth() == today.getMonth());
-                System.out.println(wsList.get(i).getDateWE().getDay() == today.getDay());
+            if(start > wsList.size()) start = wsList.size() - (wsList.size()%quantity);
+            if(start < 0) start = 0;
+            for (int i = start; i < wsList.size() && i < start + quantity; i++) {
                 if (wsList.get(i).getDateWE().getYear() == today.getYear() &&
                         wsList.get(i).getDateWE().getMonth() == today.getMonth() &&
                         wsList.get(i).getDateWE().getDay() == today.getDay()) {
@@ -132,7 +130,7 @@ public class TrackingService {
 
             Transaction.commit(connection);
         } catch (DBException e) {
-            e.printStackTrace();
+            LOGGER.error("DB.DAO,CRUD (TrackingService.getEatenToday()) exception : UtilDAO,CRUD reading error!");
             return eatenToday;
         } catch (Exception e) {
             Transaction.rollback(e, connection);
@@ -188,9 +186,8 @@ public class TrackingService {
             foods = DAOFactory.getInstance().getCRUD(new Food()).findAll(connection);
 
             Transaction.commit(connection);
-        } catch (DBException e) {
-            return foods;
         }catch (Exception e) {
+            LOGGER.error("DB.CRUD (TrackingService.getAllFoods()) exception : CRUD findAll error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);

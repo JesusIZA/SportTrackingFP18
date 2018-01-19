@@ -1,5 +1,6 @@
 package ua.jr.raichuk.DB.utils;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.Exceptions.ConnectionException;
 
 import javax.naming.Context;
@@ -14,6 +15,8 @@ import java.sql.SQLException;
  * @author Jesus Raichuk
  */
 public abstract class UtilConnectionPool {
+    private static Logger LOGGER = Logger.getLogger(UtilConnectionPool.class);
+
     private static DataSource dataSource = null;
     private static final String JNDI_LOOKUP_SERVICE = "java:comp/env/jdbc/sportt18db";
 
@@ -25,7 +28,7 @@ public abstract class UtilConnectionPool {
                 dataSource = (DataSource) lookup;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("ConnectionPool (UtilConnectionPool.getDataSource()) exception : DataSource was not found!");
         }
         return dataSource;
     }
@@ -35,10 +38,11 @@ public abstract class UtilConnectionPool {
         try {
             connection = getDataSource().getConnection();
         } catch (SQLException e) {
+            LOGGER.error("ConnectionPool (UtilConnectionPool.getConnectionFromConnectionPool()) exception : Connection cannot be got!");
             try {
                 throw new ConnectionException(e);
             } catch (ConnectionException e1) {
-                e1.printStackTrace();
+                LOGGER.debug("ConnectionPool (UtilConnectionPool.getConnectionFromConnectionPool()) exception : Connection get error!");
             }
         }
         return connection;
@@ -48,10 +52,11 @@ public abstract class UtilConnectionPool {
         try {
             con.close();
         } catch (SQLException e) {
+            LOGGER.error("ConnectionPool (UtilConnectionPool.stopConnection()) exception : Connection cannot be stopped!");
             try {
                 throw new ConnectionException(e);
             } catch (ConnectionException e1) {
-                e1.printStackTrace();
+                LOGGER.debug("ConnectionPool (UtilConnectionPool.stopConnection()) exception : Connection stop error!");
             }
         }
     }

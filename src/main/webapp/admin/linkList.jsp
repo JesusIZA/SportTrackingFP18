@@ -6,12 +6,11 @@
 <link rel="stylesheet" type="text/css" href="styles/admin.css">
 <link rel="shortcut icon" type="image/x-icon" href="images/icon1.png">
 
-<jsp:include page="../siteparts/header.jsp" />
 
 <div class="admin">
 <h1>Admin Page</h1>
     <h3>
-        <a href="${pageContext.request.contextPath}/do?command=adminshownewlinkform"><strong>Add New Link</strong></a>
+        <a href="${pageContext.request.contextPath}/do?command=adminshownewlinkform"><strong>Add NEW Link</strong></a>
         &nbsp;
         <a href="${pageContext.request.contextPath}/do?command=adminshowlistuser">List Users</a>
         &nbsp;
@@ -22,6 +21,8 @@
         <a href="${pageContext.request.contextPath}/do?command=adminshowlistfood">List Foods</a>
         &nbsp;
         <a href="${pageContext.request.contextPath}/do?command=adminshowlistwaseaten">List Was eaten</a>
+        &nbsp;
+        <a href="${pageContext.request.contextPath}/do?command=logout">LOG OUT</a>
 
     </h3>
 <div align="center">
@@ -51,5 +52,3 @@
 </div>
     <div class="clear"></div>
 </div>
-
-<jsp:include page="../siteparts/footer.jsp" />

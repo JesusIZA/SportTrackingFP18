@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.services.admin;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.impls.realdao.DAOFactory;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.DB.entities.impls.Food;
@@ -16,6 +17,8 @@ import java.util.List;
  * @author Jesus Raichuk
  */
 public class FoodService extends AdminService<Food> {
+    private static Logger LOGGER = Logger.getLogger(FoodService.class);
+
     FoodService(){}
     @Override
     public Entity getEmptyClass() {
@@ -29,6 +32,7 @@ public class FoodService extends AdminService<Food> {
             DAOFactory.getInstance().getCRUD(new Food()).delete(id, connection);
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.CRUD,DAO (FoodService.delete()) exception : CRUD, UtilDAO for Food delete error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);
@@ -54,6 +58,7 @@ public class FoodService extends AdminService<Food> {
 
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.CRUD,DAO (FoodService.addFoodToday()) exception : CRUD,UtilDAO for Food (WasEaten, Link) adding new food today error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);

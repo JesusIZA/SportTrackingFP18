@@ -14,7 +14,6 @@ public abstract class UtilService{
         Date today = Date.valueOf("1900-01-01");
         today.getTime();
         today.setTime(new java.util.Date().getTime());
-        System.out.println(profile);
 
         long age = (today.getTime() - profile.getBirthday().getTime()) / 31560000000L;
 

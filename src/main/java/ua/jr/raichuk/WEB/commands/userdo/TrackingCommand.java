@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.userdo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.impls.Food;
 import ua.jr.raichuk.DB.entities.impls.Norm;
 import ua.jr.raichuk.Exceptions.TransactionException;
@@ -18,6 +19,7 @@ import java.util.Objects;
  * @author Jesus Raichuk
  */
 public class TrackingCommand implements Command {
+    private static Logger LOGGER = Logger.getLogger(TrackingCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("login");
@@ -31,9 +33,28 @@ public class TrackingCommand implements Command {
                 name = trackingService.getName(login) + " " + trackingService.getSurname(login);
                 request.getSession().setAttribute("name", name);
             }
+
+            int quantity = 5;
+            int start = 0;
+            if(!Objects.isNull(request.getSession().getAttribute("start")) &&
+                    !Objects.equals(request.getSession().getAttribute("start"), "")){
+                start = (int) request.getSession().getAttribute("start");
+            }
+            System.out.println(start);
+
+            String goPage = request.getParameter("doPage");
+            if(!Objects.isNull(goPage)) {
+                if(goPage.equals("PREV")){
+                    start -= quantity;
+                } else {
+                    start += quantity;
+                }
+            }
+
+
             Norm norm = trackingService.getNorm(login);
             Norm forNow = trackingService.getForNow(login);
-            List<Food> eatenToday = trackingService.getEatenToday(login);
+            List<Food> eatenToday = trackingService.getEatenToday(login, start, quantity);
             String message = trackingService.getMessage(norm, forNow);
             String color = trackingService.getColor(norm, forNow);
             List<Food> foods = trackingService.getAllFoods();
@@ -56,49 +77,20 @@ public class TrackingCommand implements Command {
                 tf.setCarbohydrates(0.0);
                 foods.add(tf);
             }
-            //reverse list
-            List<Food> reversed = new ArrayList<Food>();
-            for (int i = eatenToday.size()-1; i >= 0; i--) {
-                reversed.add(eatenToday.get(i));
-            }
-            Integer start = (Integer)request.getSession().getAttribute("start");
-            Integer end = (Integer)request.getSession().getAttribute("end");
-            if(Objects.isNull(start)) start = 0;
-            if(Objects.isNull(end)) end = 10;
-            List<Food> page = new ArrayList<Food>();
 
-            String goPage = request.getParameter("doPage");
-            System.out.println(goPage);
-            if(!Objects.isNull(goPage)) {
-                if(goPage.equals("PREV")){
-                    start -= 10;
-                    end -= 10;
-                } else {
-                    start += 10;
-                    end += 10;
-                }
-            }
-            if(start >= reversed.size()) start = reversed.size() - 10;
+            if(start > eatenToday.size()) start = eatenToday.size() - (eatenToday.size()%quantity);
             if(start < 0) start = 0;
-            if(end < 0) end = 10;
-            if(end >= reversed.size()) end = reversed.size();
-            System.out.println(start + "-" + end);
-
             request.getSession().setAttribute("start", start);
-            request.getSession().setAttribute("end", end);
-
-            for (int i = start; i < end; i++) {
-                page.add(reversed.get(i));
-            }
 
             request.setAttribute("norm", norm);
             request.setAttribute("forNow", forNow);
             request.setAttribute("message", message);
             request.setAttribute("color", color);
             request.setAttribute("foods", foods);
-            request.setAttribute("eatenToday", page);
+            request.setAttribute("eatenToday", eatenToday);
             request.getRequestDispatcher("trackingToday.jsp").forward(request, response);
         } catch (TransactionException e) {
+            LOGGER.error("DB.DAO(CRUD)->Command.User (TrackingCommand.execute()) exception : read error!");
             request.setAttribute("error", "Server error");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         }

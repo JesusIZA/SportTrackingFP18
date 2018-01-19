@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.services.admin;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.impls.realdao.DAOFactory;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.DB.entities.impls.User;
@@ -12,6 +13,7 @@ import java.sql.Connection;
  * @author Jesus Raichuk
  */
 public class UserService extends AdminService<User>{
+    private static Logger LOGGER = Logger.getLogger(UserService.class);
 
     UserService(){}
 
@@ -22,6 +24,7 @@ public class UserService extends AdminService<User>{
 
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.DAO (UserService.edit()) exception : UtilDAO.editUser for User edit error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);

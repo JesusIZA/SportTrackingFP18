@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.userdo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.impls.Profile;
 import ua.jr.raichuk.Exceptions.TransactionException;
 import ua.jr.raichuk.WEB.commands.Command;
@@ -15,6 +16,7 @@ import java.io.IOException;
  * @author Jesus Raichuk
  */
 public class ShowProfileCommand implements Command {
+    private static Logger LOGGER = Logger.getLogger(ShowProfileCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("login");
@@ -31,6 +33,7 @@ public class ShowProfileCommand implements Command {
 
             request.getRequestDispatcher("editProfile.jsp").forward(request, response);
         } catch (TransactionException e) {
+            LOGGER.error("DB.DAO(CRUD)->Command.User (ShowProfileCommand.execute()) exception : read error!");
             request.setAttribute("error", "Profile error");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         }

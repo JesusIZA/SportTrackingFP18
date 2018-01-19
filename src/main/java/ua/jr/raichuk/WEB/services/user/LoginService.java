@@ -1,6 +1,7 @@
 package ua.jr.raichuk.WEB.services.user;
 
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.impls.realdao.DAOFactory;
 import ua.jr.raichuk.DB.entities.impls.User;
 import ua.jr.raichuk.DB.transactions.Transaction;
@@ -10,6 +11,8 @@ import java.sql.Connection;
 import java.util.Objects;
 
 public class LoginService {
+    private static Logger LOGGER = Logger.getLogger(LoginService.class);
+
     private static LoginService service = new LoginService();
 
     public static LoginService getService(){
@@ -27,6 +30,7 @@ public class LoginService {
 
             ret = (Objects.nonNull(user) && user.getPassword().equals(password));
         } catch (Exception e) {
+            LOGGER.error("DB.DAO (LoginService.verify()) exception : UtilDAO.findUserByLogin get User error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);

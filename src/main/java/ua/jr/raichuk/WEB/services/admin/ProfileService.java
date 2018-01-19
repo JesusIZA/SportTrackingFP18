@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.services.admin;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.impls.realdao.DAOFactory;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.DB.entities.impls.Link;
@@ -15,6 +16,7 @@ import java.sql.Connection;
  * @author Jesus Raichuk
  */
 public class ProfileService extends AdminService<Profile> {
+    private static Logger LOGGER = Logger.getLogger(ProfileService.class);
 
     ProfileService(){}
 
@@ -40,6 +42,7 @@ public class ProfileService extends AdminService<Profile> {
 
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.DAO (ProfileService.editProfile()) exception : CRUD,UtilDAO for Profile find and edit error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);
@@ -55,6 +58,7 @@ public class ProfileService extends AdminService<Profile> {
 
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.DAO,CRUD (ProfileService.getProfile()) exception : UtilDAO,CRUD for Profile find error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);
@@ -69,6 +73,7 @@ public class ProfileService extends AdminService<Profile> {
 
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.DAO (ProfileService.deleteProfile()) exception : UtilDAO.deleteProfile for Profile edit error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);

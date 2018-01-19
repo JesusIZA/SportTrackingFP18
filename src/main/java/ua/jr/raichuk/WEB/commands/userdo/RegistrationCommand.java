@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.userdo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.impls.Profile;
 import ua.jr.raichuk.DB.entities.impls.User;
 import ua.jr.raichuk.Exceptions.DataException;
@@ -19,6 +20,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 public class RegistrationCommand implements Command {
+    private static Logger LOGGER = Logger.getLogger(RegistrationCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -56,13 +58,16 @@ public class RegistrationCommand implements Command {
                      throw new DataException("Data is incorrect");
                  }
             } catch (DataException e) {
+                LOGGER.debug("Command.Admin->Data (RegistrationCommand.execute()) exception : Data is incorrect!");
                 request.setAttribute("error", e.getMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             } catch (TransactionException e1) {
+                LOGGER.error("DB.DAO(CRUD)->Command.User (RegistrationCommand.execute()) exception : insert error!");
                 request.setAttribute("error", "Server error");
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         } catch (IllegalArgumentException e2) {
+            LOGGER.debug("Command.User->Data (RegistrationCommand.execute()) exception : Data is illegal!");
             request.setAttribute("error", "Data is illegal");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }

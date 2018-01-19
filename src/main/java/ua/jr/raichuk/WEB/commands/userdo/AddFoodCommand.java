@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.userdo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.impls.Food;
 import ua.jr.raichuk.Exceptions.DataException;
 import ua.jr.raichuk.Exceptions.TransactionException;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @author Jesus Raichuk
  */
 public class AddFoodCommand implements Command {
+    private static Logger LOGGER = Logger.getLogger(AddFoodCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("login");
@@ -36,12 +38,15 @@ public class AddFoodCommand implements Command {
                 FactoryCommand.getInstance().getCommand(FactoryCommand.TRACKING).execute(request, response);
             }
         } catch (DataException e1) {
+            LOGGER.debug("Command.Admin->Data (AddFoodCommand.execute()) exception : Data is incorrect!");
             request.setAttribute("error", e1.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request,response);
         } catch (IllegalArgumentException e) {
+            LOGGER.debug("Command.User->Data (AddFoodCommand.execute()) exception : Data is illegal!");
             request.setAttribute("error", "Data is illegal");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         } catch (TransactionException e) {
+            LOGGER.error("DB.DAO(CRUD)->Command.User (AddFoodCommand.execute()) exception : insert error!");
             request.setAttribute("error", "Server error");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         }

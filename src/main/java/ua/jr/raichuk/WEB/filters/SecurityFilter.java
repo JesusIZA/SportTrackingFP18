@@ -1,6 +1,7 @@
 package ua.jr.raichuk.WEB.filters;
 
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.WEB.authentication.Authentication;
 import ua.jr.raichuk.WEB.configaration.SecurityConfiguration;
 
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class SecurityFilter implements Filter {
+    private static Logger LOGGER = Logger.getLogger(SecurityFilter.class);
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -25,19 +28,19 @@ public class SecurityFilter implements Filter {
         String role = configuration.security(command);
 
         if (Objects.equals(role, SecurityConfiguration.ALL)) {
-            System.out.println("filter all");
+            LOGGER.debug("Filter.Security (SecurityFilter.doFilter()) info : Successful request for ALL.");
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
         if (Objects.equals(role, SecurityConfiguration.AUTH)
                 && Authentication.isUserLogIn(request.getSession())) {
-            System.out.println("filter author");
+            LOGGER.debug("Filter.Security (SecurityFilter.doFilter()) info : Successful request for AUTH.");
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
         if (Objects.equals(role, SecurityConfiguration.AUTH)
                 && !Authentication.isUserLogIn(request.getSession())) {
-            System.out.println("filter error");
+            LOGGER.info("Filter.Security (SecurityFilter.doFilter()) info : Not authorised request for AUTH.");
             request.setAttribute("error", "Authentication failed");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
@@ -45,21 +48,20 @@ public class SecurityFilter implements Filter {
         if (Objects.equals(role, SecurityConfiguration.ADMIN)
                 && Authentication.isUserLogIn(request.getSession())
                 && Authentication.isAdmin(request.getSession())) {
-            System.out.println("filter admin");
-
+            LOGGER.debug("Filter.Security (SecurityFilter.doFilter()) info : Successful request for ADMIN.");
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
         if (Objects.equals(role, SecurityConfiguration.ADMIN)
                 && !Authentication.isUserLogIn(request.getSession())) {
-            System.out.println("filter admin");
+            LOGGER.warn("Filter.Security (SecurityFilter.doFilter()) info : Not authorised request for ADMIN.");
             request.setAttribute("error", "Authentication failed");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
         if (Objects.equals(role, SecurityConfiguration.ADMIN)
                 && !Authentication.isAdmin(request.getSession())) {
-            System.out.println("filter admin");
+            LOGGER.warn("Filter.Security (SecurityFilter.doFilter()) info : Illegal request for ADMIN.");
             request.setAttribute("error", "Illegal request");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;

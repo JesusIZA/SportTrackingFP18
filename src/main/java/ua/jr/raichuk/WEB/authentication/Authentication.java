@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.authentication;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.impls.realdao.DAOFactory;
 import ua.jr.raichuk.DB.transactions.Transaction;
 import ua.jr.raichuk.Exceptions.TransactionException;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.util.Objects;
 
 public abstract class Authentication {
+    private static Logger LOGGER = Logger.getLogger(Authentication.class);
     private Authentication() {
     }
 
@@ -27,12 +29,14 @@ public abstract class Authentication {
                 Transaction.commit(connection);
                 isIn = (Objects.nonNull(login) || Objects.equals(login, "")) && LoginService.getService().verify(login, password);
             } catch (TransactionException transactionException) {
+                LOGGER.error("Transaction (Authentication.isUserLogIn()) exception : Transaction before commit error!");
                 isIn = false;
             } finally {
                 Transaction.endTransaction(connection);
             }
         } catch (Exception e) {
-            return false;
+            LOGGER.error("Transaction (Authentication.isUserLogIn()) exception : Transaction error!");
+            isIn = false;
         }
 
         return isIn;

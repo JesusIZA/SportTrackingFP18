@@ -1,6 +1,7 @@
 package ua.jr.raichuk.DB.dao.impls.realdao;
 
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.CRUD;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.DB.transactions.Transaction;
@@ -12,6 +13,7 @@ import ua.jr.raichuk.DB.transactions.Transaction;
  * @author Jesus Raichuk
  */
 public class DAOFactory {
+    private static Logger LOGGER = Logger.getLogger(DAOFactory.class);
     private static DAOFactory instance = new DAOFactory();
 
     private static UserCRUD ui = new UserCRUD();
@@ -22,9 +24,7 @@ public class DAOFactory {
     private static LinkCRUD li = new LinkCRUD();
     private static UtilDAO ud = new UtilDAO();
 
-    private DAOFactory() {
-
-    }
+    private DAOFactory() {}
 
     public static DAOFactory getInstance() {
         return instance;
@@ -32,20 +32,34 @@ public class DAOFactory {
 
     public CRUD getCRUD(Entity entity) {
         switch (entity.getClassName()){
-            case "User":
+            case "User": {
+                LOGGER.debug("CRUD for User was got.");
                 return ui;
-            case "Food":
+            }
+            case "Food": {
+                LOGGER.debug("CRUD for Food was got.");
                 return fi;
-            case "Profile":
+            }
+            case "Profile": {
+                LOGGER.debug("CRUD for Profile was got.");
                 return pi;
-            case "WasEaten":
+            }
+            case "WasEaten": {
+                LOGGER.debug("CRUD for WasEaten was got.");
                 return wi;
-            case "Norm":
+            }
+            case "Norm": {
+                LOGGER.debug("CRUD for Norm was got.");
                 return ni;
-            case "Link":
+            }
+            case "Link": {
+                LOGGER.debug("CRUD for Link was got.");
                 return li;
-            default:
+            }
+            default: {
+                LOGGER.debug("Was got CRUD-null.");
                 return null;
+            }
         }
     }
 

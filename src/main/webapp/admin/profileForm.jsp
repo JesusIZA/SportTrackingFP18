@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="styles/admin.css">
 <link rel="shortcut icon" type="image/x-icon" href="images/icon1.png">
 
-<jsp:include page="../siteparts/header.jsp" />
 <div class="admin">
 <h1>Admin Page</h1>
     <h2>
@@ -106,5 +105,3 @@
 </div>
     <div class="clear"></div>
 </div>
-
-<jsp:include page="../siteparts/footer.jsp" />

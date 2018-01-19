@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.admindo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.Exceptions.DataException;
 import ua.jr.raichuk.Exceptions.TransactionException;
@@ -17,6 +18,7 @@ import java.io.IOException;
  * @author Jesus Raichuk
  */
 public abstract class AdminUpdateCommand<T> implements Command {
+    private static Logger LOGGER = Logger.getLogger(AdminUpdateCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -26,12 +28,15 @@ public abstract class AdminUpdateCommand<T> implements Command {
             adminService.update(t);
             FactoryCommand.getInstance().getCommand(getRedirect()).execute(request, response);
         } catch (DataException e1) {
+            LOGGER.debug("Command.Admin->Data (AdminUpdateCommand.execute()) exception : Data is incorrect!");
             request.setAttribute("error", e1.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request,response);
         } catch (IllegalArgumentException e) {
+            LOGGER.debug("Command.Admin->Data (AdminUpdateCommand.execute()) exception : Data is illegal!");
             request.setAttribute("error", "Data is illegal");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         } catch (TransactionException e) {
+            LOGGER.error("DB.DAO(CRUD)->Command.Admin (AdminUpdateCommand.execute()) exception : update error!");
             request.setAttribute("error", "Server error");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         }

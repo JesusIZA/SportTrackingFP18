@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.services.user;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.impls.realdao.DAOFactory;
 import ua.jr.raichuk.DB.entities.impls.Link;
 import ua.jr.raichuk.DB.entities.impls.Norm;
@@ -11,6 +12,8 @@ import ua.jr.raichuk.Exceptions.TransactionException;
 import java.sql.Connection;
 
 public class RegistrationService {
+    private static Logger LOGGER = Logger.getLogger(RegistrationService.class);
+
     private static RegistrationService service = new RegistrationService();
 
     public static RegistrationService getService(){
@@ -36,7 +39,7 @@ public class RegistrationService {
 
             Transaction.commit(connection);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("DB.DAO,CRUD (RegistrationService.register()) exception : UtilDAO,CRUD adding error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);

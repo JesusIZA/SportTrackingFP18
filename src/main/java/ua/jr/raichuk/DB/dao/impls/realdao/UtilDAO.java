@@ -1,5 +1,6 @@
 package ua.jr.raichuk.DB.dao.impls.realdao;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.CRUD;
 import ua.jr.raichuk.DB.entities.impls.*;
 import ua.jr.raichuk.Exceptions.DBException;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author Jesus Raichuk
  */
 public class UtilDAO{
+    private static Logger LOGGER = Logger.getLogger(DAOFactory.class);
 
     UtilDAO(){}
 
@@ -21,27 +23,22 @@ public class UtilDAO{
 
         PreparedStatement preparedStatement = null;
         String sql = "SELECT * FROM " + new UserCRUD().getTableName() + " WHERE login=?";
-        System.out.println(sql + " " + login);
 
         User entity = null;
         try{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
+            LOGGER.debug(preparedStatement);
             resultSet.beforeFirst();
             resultSet.next();
             entity = new UserCRUD().fillEntity(resultSet);
             preparedStatement.execute();
+            if(preparedStatement != null)
+                preparedStatement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (UtilDAO.findUserByLogin()) exception : User by login=" + login + " not found!");
             new DBException("User not found");
-        } finally {
-            if(preparedStatement != null){
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return entity;
     }
@@ -51,27 +48,21 @@ public class UtilDAO{
 
         PreparedStatement preparedStatement = null;
         String sql = "SELECT * FROM " + new FoodCRUD().getTableName() + " WHERE name=?";
-        System.out.println(sql);
-
         Food entity = null;
         try{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
+            LOGGER.debug(preparedStatement);
             resultSet.beforeFirst();
             resultSet.next();
             entity = new FoodCRUD().fillEntity(resultSet);
             preparedStatement.execute();
+            if(preparedStatement != null)
+                preparedStatement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (UtilDAO.findFoodByName()) exception : Food by name=" + name + " not found!");
             throw new DBException("Food not found");
-        } finally {
-            if(preparedStatement != null){
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return entity;
     }
@@ -79,8 +70,6 @@ public class UtilDAO{
     public Link findLinkByLogin(String login, Connection connection) throws DBException {
         PreparedStatement preparedStatement = null;
         String sqlFindLink = "SELECT * FROM " + new LinkCRUD().getTableName() + " WHERE " + new UserCRUD().getTableIdRowName() + "=?";
-
-        System.out.println(sqlFindLink);
 
         Link entity = null;
 
@@ -93,7 +82,7 @@ public class UtilDAO{
 
             preparedStatement.setInt(1, user.getIdU());
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            LOGGER.debug(preparedStatement);
             resultSet.beforeFirst();
             resultSet.next();
             entity = new LinkCRUD().fillEntity(resultSet);
@@ -104,7 +93,7 @@ public class UtilDAO{
                 preparedStatement.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Connection->SQL (UtilDAO.findLinkByLogin()) exception : Link by login=" + login + " not found!");
             new DBException("Link not found");
         }
 
@@ -115,14 +104,13 @@ public class UtilDAO{
         PreparedStatement preparedStatement = null;
         String sqlFindWasEaten = "SELECT * FROM " + new WasEatenCRUD().getTableName() + " WHERE " + new ProfileCRUD().getTableIdRowName() + "=?";
 
-        System.out.println(sqlFindWasEaten);
-
         List<WasEaten> entities = new ArrayList<WasEaten>();
         try{
             Link link = DAOFactory.getInstance().getUtilDAO().findLinkByLogin(login, connection);
 
             preparedStatement = connection.prepareStatement(sqlFindWasEaten);
             preparedStatement.setInt(1, link.getIdP());
+            LOGGER.debug(preparedStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
 
 
@@ -136,22 +124,16 @@ public class UtilDAO{
                 preparedStatement.close();
             }
         } catch (Exception e2) {
-            e2.printStackTrace();
+            LOGGER.error("Connection->SQL (UtilDAO.findWasEatenByLogin()) exception : WasEaten by login=" + login + " not found!");
             throw new DBException("WasEaten not found");
         }
         return entities;
     }
 
     public Profile findProfileByLogin(String login, Connection connection) throws DBException {
-
         Profile entity = null;
-
         Link link = DAOFactory.getInstance().getUtilDAO().findLinkByLogin(login, connection);
-        System.out.println(link);
-
         entity = (Profile) DAOFactory.getInstance().getCRUD(new Profile()).findById(link.getIdP(), connection);
-
-        System.out.println(entity);
         return entity;
     }
 
@@ -159,12 +141,11 @@ public class UtilDAO{
         PreparedStatement preparedStatement = null;
         String sql = "SELECT * FROM " + new WasEatenCRUD().getTableName() + " WHERE " + new ProfileCRUD().getTableIdRowName() + "=?";
 
-        System.out.println(sql);
-
         List<WasEaten> wsL = new ArrayList<WasEaten>();
         try{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, pId);
+            LOGGER.debug(preparedStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 WasEaten wasEaten = new WasEaten();
@@ -179,6 +160,7 @@ public class UtilDAO{
                 preparedStatement.close();
             }
         } catch (Exception e2) {
+            LOGGER.error("Connection->SQL (UtilDAO.findWasEatenByProfileId()) exception : WasEaten by Profile Id=" + pId + " not found!");
             throw new DBException("WasEaten not found");
         }
         return wsL;
@@ -227,22 +209,17 @@ public class UtilDAO{
         PreparedStatement preparedStatement = null;
 
         String sql = "DELETE FROM " + new WasEatenCRUD().getTableName() + " WHERE " + new FoodCRUD().getTableIdRowName() + "=?";
-        System.out.println(sql);
 
         try{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, (Integer)idF);
+            LOGGER.debug(preparedStatement);
             preparedStatement.executeUpdate();
+            if(preparedStatement != null)
+                preparedStatement.close();
         } catch (Exception e){
+            LOGGER.error("Connection->SQL (UtilDAO.deleteWasEatenByFoodId()) exception : WasEaten by Food Id=" + idF + " not found!");
             throw new DBException("Not deleted");
-        } finally {
-            if(preparedStatement != null){
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 

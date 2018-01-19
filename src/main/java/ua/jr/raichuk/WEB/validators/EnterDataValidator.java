@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.validators;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.impls.realdao.DAOFactory;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.DB.entities.impls.User;
@@ -19,6 +20,8 @@ import java.util.regex.Pattern;
  * @author Jesus Raichuk
  */
 public abstract class EnterDataValidator {
+    private static Logger LOGGER = Logger.getLogger(EnterDataValidator.class);
+
     public static final String LOGIN_PATTERN = "[A-Za-z]+[A-Za-z0-9]*";
     public static final String PASSWORD_PATTERN = "[A-za-z0-9]+";
     public static final String NAME_PATTERN = "[A-ZА-Яa-zа-я_]+";
@@ -64,6 +67,7 @@ public abstract class EnterDataValidator {
 
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.DAO (EnterDataValidator.isFreeLogin()) exception : UtilDAO.findUserByLogin get User error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);
@@ -102,6 +106,7 @@ public abstract class EnterDataValidator {
             }
             Transaction.commit(connection);
         } catch (Exception e) {
+            LOGGER.error("DB.CRUD (EnterDataValidator.isIdExisting()) exception : CRUD.getAllIds get Ids error!");
             Transaction.rollback(e, connection);
         } finally {
             Transaction.endTransaction(connection);
@@ -118,12 +123,11 @@ public abstract class EnterDataValidator {
                 matcher.find();
                 String found = matcher.group();
 
-                System.out.println(found + " " + word);
-
                 if(!Objects.equals(found, "") && !Objects.isNull(found) && Objects.equals(found, word))
                     return true;
             }
         } catch (Exception e) {
+            LOGGER.error("DataValidator.Text (EnterDataValidator.validTextField()) exception : Text Data is incorrect, error!");
             throw new DataException("Text data is illegal");
         }
         return false;

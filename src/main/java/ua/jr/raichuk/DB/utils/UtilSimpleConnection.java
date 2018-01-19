@@ -1,5 +1,6 @@
 package ua.jr.raichuk.DB.utils;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.Exceptions.ConnectionException;
 
 import java.sql.Connection;
@@ -10,6 +11,8 @@ import java.sql.SQLException;
  * @author Jesus Raichuk
  */
 public abstract class UtilSimpleConnection {
+    private static Logger LOGGER = Logger.getLogger(UtilSimpleConnection.class);
+
     private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/sportt18db";
     private static final String DB_USERNAME = "root";
@@ -21,10 +24,8 @@ public abstract class UtilSimpleConnection {
         try {
             Class.forName(DB_DRIVER);
             connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-            System.out.println("Connection OK!");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Connection ERROR!");
+            LOGGER.error("Connection (UtilSimpleConnection.getConnection()) exception : Connection cannot be got!");
         }
         return connection;
     }
@@ -32,10 +33,11 @@ public abstract class UtilSimpleConnection {
         try {
             con.close();
         } catch (SQLException e) {
+            LOGGER.error("Connection (UtilSimpleConnection.stopConnection()) exception : Connection cannot be stopped!");
             try {
                 throw new ConnectionException(e);
             } catch (ConnectionException e1) {
-                e1.printStackTrace();
+                LOGGER.debug("Connection (UtilSimpleConnection.stopConnection()) exception : Connection stop error!");
             }
         }
     }

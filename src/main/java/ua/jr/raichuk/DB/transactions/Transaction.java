@@ -1,5 +1,6 @@
 package ua.jr.raichuk.DB.transactions;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.dao.CRUD;
 import ua.jr.raichuk.DB.utils.UtilConnectionPool;
 import ua.jr.raichuk.DB.entities.impls.*;
@@ -12,12 +13,14 @@ import java.sql.*;
  * @author Jesus Raichuk
  */
 public abstract class Transaction extends UtilConnectionPool {
+    private static Logger LOGGER = Logger.getLogger(Transaction.class);
+
     public static Connection startTransaction() throws TransactionException {
         Connection connection = getConnectionFromConnectionPool();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e2) {
-            System.out.println(e2.getMessage());
+            LOGGER.error("Connection->Transaction (Transaction.startTransaction()) exception : Transaction not started -> setAutocommit error!");
             throw new TransactionException(e2.getMessage());
         }
         return connection;
@@ -27,10 +30,10 @@ public abstract class Transaction extends UtilConnectionPool {
         try {
             connection.rollback();
         } catch (SQLException e1) {
-            System.out.println(e.getMessage());
+            LOGGER.error("Connection->Transaction (Transaction.rollback()) exception : Transaction was not rollback -> rollback error!");
             throw new TransactionException(e1.getMessage());
         } finally {
-            e.printStackTrace();
+            LOGGER.error("Connection->Transaction (Transaction.rollback()) exception : Transaction was rollback -> before commit error!");
             throw new TransactionException(e.getMessage());
         }
     }
@@ -39,7 +42,7 @@ public abstract class Transaction extends UtilConnectionPool {
         try {
             connection.commit();
         } catch (SQLException e1) {
-            System.out.println(e1.getMessage());
+            LOGGER.error("Connection->Transaction (Transaction.commit()) exception : Transaction not committed -> commit error!");
             throw new TransactionException(e1.getMessage());
         }
     }
@@ -48,7 +51,7 @@ public abstract class Transaction extends UtilConnectionPool {
         try {
             connection.setAutoCommit(true);
         } catch (SQLException e2) {
-            System.out.println(e2.getMessage());
+            LOGGER.error("Connection->Transaction (Transaction.endTransaction()) exception : Transaction not finished -> setAutocommit error!");
             throw new TransactionException(e2.getMessage());
         } finally {
             stopConnection(connection);

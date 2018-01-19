@@ -1,5 +1,6 @@
 package ua.jr.raichuk.WEB.commands.admindo;
 
+import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.Exceptions.TransactionException;
 import ua.jr.raichuk.WEB.commands.Command;
@@ -15,6 +16,7 @@ import java.io.IOException;
  * @author Jesus Raichuk
  */
 public abstract class AdminShowEditFormCommand<T> implements Command {
+    private static Logger LOGGER = Logger.getLogger(AdminShowEditFormCommand.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -26,6 +28,7 @@ public abstract class AdminShowEditFormCommand<T> implements Command {
 
             request.getRequestDispatcher(getRedirect()).forward(request, response);
         } catch (TransactionException e) {
+            LOGGER.error("DB.DAO(CRUD)->Command.Admin (AdminShowEditFormCommand.execute()) exception : read error!");
             request.setAttribute("error", "Food search error");
             request.getRequestDispatcher("error.jsp").forward(request,response);
         }
