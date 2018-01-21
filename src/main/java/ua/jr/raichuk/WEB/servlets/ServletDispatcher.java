@@ -1,6 +1,7 @@
 package ua.jr.raichuk.WEB.servlets;
 
 import org.apache.log4j.Logger;
+import ua.jr.raichuk.DB.utils.UtilConnectionPool;
 import ua.jr.raichuk.WEB.commands.Command;
 import ua.jr.raichuk.WEB.commands.FactoryCommand;
 
@@ -13,6 +14,12 @@ import java.io.IOException;
 
 public class ServletDispatcher extends HttpServlet{
     private static Logger LOGGER = Logger.getLogger(ServletDispatcher.class);
+
+    @Override
+    public void init() throws ServletException {
+        UtilConnectionPool.getDataSource();
+        LOGGER.info("ConnectionPool (UtilConnectionPool) info : DataSource found.");
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

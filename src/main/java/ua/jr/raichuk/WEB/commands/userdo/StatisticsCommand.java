@@ -31,12 +31,9 @@ public class StatisticsCommand implements Command {
                 from = Date.valueOf(request.getParameter("from"));
                 to = Date.valueOf(request.getParameter("to"));
             } catch (IllegalArgumentException e) {
-                System.out.println("session");
                 from = (Date) request.getSession().getAttribute("from");
                 to = (Date) request.getSession().getAttribute("to");
             }
-                System.out.println("from=" + from);
-                System.out.println("to=" + to);
 
             if(Objects.isNull(from)) {
                 Date today = Date.valueOf("2018-01-01");
@@ -50,65 +47,36 @@ public class StatisticsCommand implements Command {
                 today.setTime(new java.util.Date().getTime());
                 to = today;
             }
-
             if(!EnterDataValidator.isValidDate(from) || !EnterDataValidator.isValidDate(to)
                     || !EnterDataValidator.isValidDateRange(from , to)){
-                throw new DataException("Date is incorrect");
+                throw new DataException("Range is too long (must be less than 1 month)");
             } else {
-                Set<Date> dates = new HashSet<>();
-                Map<Date, List<Food>> foods = new HashMap<Date, List<Food>>();
+                Map<Date, List<Food>> foods = new HashMap<>();
+
+
 
                 StatisticsService statisticsService = StatisticsService.getService();
-                dates = statisticsService.getAllDatesRangeByLogin(login, from, to);
+                List<Date> dates = statisticsService.getAllDatesRangeByLogin(login, from, to);
                 foods = statisticsService.getFoodsByDateRangeAndLogin(login, from, to);
 
-                List<Date> datesL = new ArrayList<Date>();
 
-                Iterator<Date> iterator = dates.iterator();
-                while (iterator.hasNext()){
-                    datesL.add(iterator.next());
-                }
-                //sorting
-                for (int i = 0; i < datesL.size()-1; i++) {
-                    if(datesL.get(i).getTime() > datesL.get(i+1).getTime()){
-                        Long temp = datesL.get(i).getTime();
-                        datesL.get(i).setTime(datesL.get(i+1).getTime());
-                        datesL.get(i+1).setTime(temp);
-                    }
-                }
 
-                if(datesL.size() == 0) {
-                    datesL.add(Date.valueOf("1900-01-01"));
+
+                if (dates.size() == 0) {
+                    dates = new ArrayList<Date>();
+                    dates.add(Date.valueOf("1900-01-01"));
                 }
-                if(foods.size() == 0) {
-                    List<Food> fo = Arrays.asList(new Food("Please click Search!", 0.0,0.0,0.0,0.0));
+                if (foods.size() == 0) {
+                    List fo = Arrays.asList(new Food("Please click Search!", 0.0, 0.0, 0.0, 0.0));
                     foods.put(Date.valueOf("1900-01-01"), fo);
+                    StatisticsService.items = 1;
                 }
-
-                Integer pos = (Integer)request.getSession().getAttribute("pos");
-                if(Objects.isNull(pos)) pos = 0;
-
-                String goPage = request.getParameter("doPage");
-                System.out.println(goPage);
-                if(!Objects.isNull(goPage)) {
-                    if(goPage.equals("PREV")){
-                        pos -= 1;
-                    } else {
-                        pos += 1;
-                    }
-                }
-                if(pos >= datesL.size()) pos = datesL.size() - 1;
-                if(pos < 0) pos = 0;
-
-                Date date = datesL.get(pos);
-                List<Food> foodsD = foods.get(date);
 
                 request.getSession().setAttribute("from", from);
                 request.getSession().setAttribute("to", to);
-                request.getSession().setAttribute("pos", pos);
 
-                request.setAttribute("date", date);
-                request.setAttribute("foods", foodsD);
+                request.setAttribute("dates", dates);
+                request.setAttribute("foods", foods);
                 request.getRequestDispatcher("statistics.jsp").forward(request, response);
             }
         } catch (DataException e) {

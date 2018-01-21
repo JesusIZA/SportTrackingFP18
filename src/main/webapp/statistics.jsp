@@ -35,35 +35,25 @@
 	</div>
 	
 	<div class="eatenItems">
+		<c:forEach var="i" begin="0" end="${dates.size()-1}">
+			<c:forEach var="j" begin="0" end="${foods.get(dates.get(i)).size()-1}">
 			<div class="day">
-				<span class="date">${date}</span>
-				<c:forEach var="j" begin="0" end="${foods.size()-1}">
+				<span class="date">${dates.get(i)}</span
 					<div class="food">
-						<p>${foods.get(j).getName()}</p>
-						<br><br>
-						<span>${foods.get(j).getCalories()}</span>
-						<span>Calories:</span>
-						<span>${foods.get(j).getFats()}</span>
-						<span>Fats:</span>
-						<span>${foods.get(j).getProteins()}</span>
-						<span>Proteins:</span>
-						<span>${foods.get(j).getCarbohydrates()}</span>
-						<span>Carbohydrates:</span>
+						<p style="font-size: 30pt;"><strong>${foods.get(dates.get(i)).get(j).getName()}</strong></p>
+						<br>
+						<span style="color : mediumvioletred;">Calories:</span>
+						<span>${foods.get(dates.get(i)).get(j).getCalories()}</span>
+						<span style="color : red;">Fats:</span>
+						<span>${foods.get(dates.get(i)).get(j).getFats()}</span>
+						<span style="color : green;">Proteins:</span>
+						<span>${foods.get(dates.get(i)).get(j).getProteins()}</span>
+						<span style="color : orange;">Carbohydrates:</span>
+						<span>${foods.get(dates.get(i)).get(j).getCarbohydrates()}</span>
 					</div>
-				</c:forEach>
 			</div>
-		<span>
-			<form action="${pageContext.request.contextPath}/do">
-			<input  name="command" value="statistics" hidden="true">
-				<input id="p1" class="button" type="submit" name="doPage" value="PREV">
-			</form>
-		</span>
-		<span>
-			<form action="${pageContext.request.contextPath}/do">
-			<input  name="command" value="statistics" hidden="true">
-				<input id="p2" class="button" type="submit" name="doPage" value="NEXT">
-			</form>
-		</span>
+			</c:forEach>
+		</c:forEach>
 		<div class="clear"></div>
 	</div>
 </div>

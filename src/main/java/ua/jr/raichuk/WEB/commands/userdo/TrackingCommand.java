@@ -40,7 +40,6 @@ public class TrackingCommand implements Command {
                     !Objects.equals(request.getSession().getAttribute("start"), "")){
                 start = (int) request.getSession().getAttribute("start");
             }
-            System.out.println(start);
 
             String goPage = request.getParameter("doPage");
             if(!Objects.isNull(goPage)) {
