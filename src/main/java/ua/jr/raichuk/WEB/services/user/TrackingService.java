@@ -10,6 +10,7 @@ import ua.jr.raichuk.Helpers.lists.PrintLists;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -116,6 +117,8 @@ public class TrackingService {
             Link link = DAOFactory.getInstance().getUtilDAO().findLinkByLogin(login, connection);
 
             List<WasEaten> wsList = DAOFactory.getInstance().getUtilDAO().findWasEatenByProfileId(link.getIdP(), connection);
+            Collections.sort(wsList);
+            Collections.reverse(wsList);
 
             if(start > wsList.size()) start = wsList.size() - (wsList.size()%quantity);
             if(start < 0) start = 0;
@@ -124,6 +127,7 @@ public class TrackingService {
                         wsList.get(i).getDateWE().getMonth() == today.getMonth() &&
                         wsList.get(i).getDateWE().getDay() == today.getDay()) {
                     Food food = (Food) DAOFactory.getInstance().getCRUD(new Food()).findById(wsList.get(i).getIdF(), connection);
+                    System.out.println("l=" + food);
                     eatenToday.add(food);
                 }
             }
@@ -137,6 +141,7 @@ public class TrackingService {
         } finally {
             Transaction.endTransaction(connection);
         }
+        PrintLists.printListByRows(eatenToday);
         return eatenToday;
     }
 

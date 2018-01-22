@@ -1,0 +1,130 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--USERS-->
+    <changeSet id="2018-01-01--1" author="IsusRaichuk" context="schemedata">
+        <createTable tableName="users">
+            <column autoIncrement="true"  name="idU" type="INT(12)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="login" type="VARCHAR(56)">
+                <constraints unique="true" nullable="false" />
+            </column>
+            <column name="password" type="VARCHAR(56)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--FOOD-->
+    <changeSet id="2018-01-01--2" author="IsusRaichuk" context="schemedata">
+        <createTable tableName="foods">
+            <column autoIncrement="true" name="idF" type="INT(12)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(250)">
+                <constraints unique="true" nullable="false" />
+            </column>
+            <column name="calories" type="REAL" defaultValue="0.0">
+                <constraints nullable="false" />
+            </column>
+            <column name="proteins" type="REAL" defaultValue="0.0">
+                <constraints nullable="false" />
+            </column>
+            <column name="fats" type="REAL" defaultValue="0.0">
+                <constraints nullable="false" />
+            </column>
+            <column name="carbohydrates" type="REAL" defaultValue="0.0">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--PROFILES-->
+    <changeSet id="2018-01-01--3" author="IsusRaichuk" context="schemedata">
+        <createTable tableName="profiles">
+            <column autoIncrement="true" name="idP" type="INT(12)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(56)">
+                <constraints nullable="false" />
+            </column>
+            <column name="surname" type="VARCHAR(56)">
+                <constraints nullable="false" />
+            </column>
+            <column name="sex" type="VARCHAR(10)">
+                <constraints nullable="false" />
+            </column>
+            <column name="birthday" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="height" type="REAL" defaultValue="0.0">
+                <constraints nullable="false" />
+            </column>
+            <column name="weight" type="REAL" defaultValue="0.0">
+                <constraints nullable="false" />
+            </column>
+            <column name="activeTime" type="INT(3)" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--WASEATEN-->
+    <changeSet id="2018-01-01--4" author="IsusRaichuk" context="schemedata">
+        <createTable tableName="waseaten">
+            <column autoIncrement="true" name="idWE" type="INT(12)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="idP" type="INT(12)">
+                <constraints nullable="false" foreignKeyName="WS_idP" referencedColumnNames="idP" referencedTableName="profiles"/>
+            </column>
+            <column name="idF" type="INT(12)">
+                <constraints nullable="false" foreignKeyName="WS_idF" referencedColumnNames="idF" referencedTableName="foods"/>
+            </column>
+            <column name="dateWE" type="DATE">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <!--NORMS-->
+    <changeSet id="2018-01-01--5" author="IsusRaichuk" context="schemedata">
+        <createTable tableName="norms">
+            <column autoIncrement="true" name="idN" type="INT(12)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="calories" type="INT(12)" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="proteins" type="INT(12)" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--LINKS-->
+    <changeSet id="2018-01-01--6" author="IsusRaichuk" context="schemedata">
+        <createTable tableName="links">
+            <column autoIncrement="true" name="idL" type="INT(12)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="idU" type="INT(12)">
+                <constraints nullable="false" foreignKeyName="L_idU" referencedColumnNames="idU" referencedTableName="users"/>
+            </column>
+            <column name="idP" type="INT(12)">
+                <constraints nullable="false" foreignKeyName="L_idP" referencedColumnNames="idP" referencedTableName="profiles"/>
+            </column>
+            <column name="idN" type="INT(12)">
+                <constraints nullable="false" foreignKeyName="L_idN" referencedColumnNames="idN" referencedTableName="norms"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+
+</databaseChangeLog>

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.impls.Food;
 import ua.jr.raichuk.DB.entities.impls.Norm;
 import ua.jr.raichuk.Exceptions.TransactionException;
+import ua.jr.raichuk.Helpers.lists.PrintLists;
 import ua.jr.raichuk.WEB.commands.Command;
 import ua.jr.raichuk.WEB.services.user.TrackingService;
 
@@ -36,9 +37,9 @@ public class TrackingCommand implements Command {
 
             int quantity = 5;
             int start = 0;
-            if(!Objects.isNull(request.getSession().getAttribute("start")) &&
-                    !Objects.equals(request.getSession().getAttribute("start"), "")){
-                start = (int) request.getSession().getAttribute("start");
+            if(!Objects.isNull(request.getSession().getAttribute("startT")) &&
+                    !Objects.equals(request.getSession().getAttribute("startT"), "")){
+                start = (int) request.getSession().getAttribute("startT");
             }
 
             String goPage = request.getParameter("doPage");
@@ -57,6 +58,8 @@ public class TrackingCommand implements Command {
             String message = trackingService.getMessage(norm, forNow);
             String color = trackingService.getColor(norm, forNow);
             List<Food> foods = trackingService.getAllFoods();
+
+            PrintLists.printListByRows(eatenToday);
 
             if (eatenToday.size() == 0) {
                 Food tf = new Food();
@@ -79,7 +82,7 @@ public class TrackingCommand implements Command {
 
             if(start > eatenToday.size()) start = eatenToday.size() - (eatenToday.size()%quantity);
             if(start < 0) start = 0;
-            request.getSession().setAttribute("start", start);
+            request.getSession().setAttribute("startT", start);
 
             request.setAttribute("norm", norm);
             request.setAttribute("forNow", forNow);

@@ -51,31 +51,43 @@ public class StatisticsCommand implements Command {
                     || !EnterDataValidator.isValidDateRange(from , to)){
                 throw new DataException("Range is too long (must be less than 1 month)");
             } else {
-                Map<Date, List<Food>> foods = new HashMap<>();
+                int quantity = 5;
+                int start = 0;
+                if(!Objects.isNull(request.getSession().getAttribute("startS")) &&
+                        !Objects.equals(request.getSession().getAttribute("startS"), "")){
+                    start = (int) request.getSession().getAttribute("startS");
+                }
 
+                String goPage = request.getParameter("doPage");
+                if(!Objects.isNull(goPage)) {
+                    if(goPage.equals("PREV")){
+                        start -= quantity;
+                    } else {
+                        start += quantity;
+                    }
+                }
 
-
+                List<StatisticsService.FoodWithDate> foods = new LinkedList<StatisticsService.FoodWithDate>();
                 StatisticsService statisticsService = StatisticsService.getService();
-                List<Date> dates = statisticsService.getAllDatesRangeByLogin(login, from, to);
-                foods = statisticsService.getFoodsByDateRangeAndLogin(login, from, to);
+                foods = statisticsService.getFoodsByDateRangeAndLogin(login, from, to, start, quantity);
 
-
-
-
-                if (dates.size() == 0) {
-                    dates = new ArrayList<Date>();
-                    dates.add(Date.valueOf("1900-01-01"));
-                }
                 if (foods.size() == 0) {
-                    List fo = Arrays.asList(new Food("Please click Search!", 0.0, 0.0, 0.0, 0.0));
-                    foods.put(Date.valueOf("1900-01-01"), fo);
-                    StatisticsService.items = 1;
+                    Date today = Date.valueOf("2018-01-01");
+                    today.getTime();
+                    today.setTime(new java.util.Date().getTime());
+                    StatisticsService.FoodWithDate fo = new StatisticsService.FoodWithDate(
+                            new Food("Please click Search!", 0.0, 0.0, 0.0, 0.0),
+                            today);
+                    foods.add(fo);
                 }
+
+                if(start > foods.size()) start = foods.size() - (foods.size()%quantity);
+                if(start < 0) start = 0;
+                request.getSession().setAttribute("startS", start);
 
                 request.getSession().setAttribute("from", from);
                 request.getSession().setAttribute("to", to);
 
-                request.setAttribute("dates", dates);
                 request.setAttribute("foods", foods);
                 request.getRequestDispatcher("statistics.jsp").forward(request, response);
             }

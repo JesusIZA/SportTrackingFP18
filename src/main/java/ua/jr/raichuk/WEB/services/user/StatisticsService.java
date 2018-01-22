@@ -29,8 +29,8 @@ public class StatisticsService {
 
     private StatisticsService(){}
 
-    public Map<Date, List<Food>> getFoodsByDateRangeAndLogin(String login, Date from, Date to) throws TransactionException {
-        Map ret = new HashMap<Date, List<Food>>();
+    public List<FoodWithDate> getFoodsByDateRangeAndLogin(String login, Date from, Date to, int start, int quantity) throws TransactionException {
+        List<FoodWithDate> fWD = new LinkedList<FoodWithDate>();
         Connection connection = Transaction.startTransaction();
         try{
             Link link = DAOFactory.getInstance().getUtilDAO().findLinkByLogin(login, connection);
@@ -39,16 +39,23 @@ public class StatisticsService {
 
             List<Date> dates = getAllDatesRangeByLogin(login, from, to);
 
-
+            List<FoodWithDate> allByRange = new ArrayList<FoodWithDate>();
             for (int i = 0; i < dates.size(); i++) {
-                List<Food> foods = new ArrayList<Food>();
                 for (int j = 0; j < wasEatenList.size(); j++) {
                     if(wasEatenList.get(j).getDateWE().getTime() == dates.get(i).getTime()) {
                         Food food = (Food) DAOFactory.getInstance().getCRUD(new Food()).findById(wasEatenList.get(j).getIdF(), connection);
-                        foods.add(food);
+                        FoodWithDate temp = new FoodWithDate(food, dates.get(i));
+                        allByRange.add(temp);
                     }
                 }
-                ret.put(dates.get(i), foods);
+            }
+
+            //Pagination
+            if(start > allByRange.size()) start = allByRange.size() - (allByRange.size()%quantity);
+            if(start < 0) start = 0;
+
+            for (int i = start; i < allByRange.size() && i < start + quantity; i++) {
+                fWD.add(allByRange.get(i));
             }
 
             Transaction.commit(connection);
@@ -58,7 +65,7 @@ public class StatisticsService {
         } finally {
             Transaction.endTransaction(connection);
         }
-        return ret;
+        return fWD;
     }
 
     public List<Date> getAllDatesRangeByLogin(String login, Date from, Date to) throws TransactionException {
@@ -85,5 +92,21 @@ public class StatisticsService {
         List<Date> ret = Arrays.asList(dates.toArray(datesD));
         Collections.sort(ret);
         return ret;
+    }
+
+    public static class FoodWithDate extends Food{
+        private Date date;
+        public FoodWithDate(Food food, Date date) {
+            super(food.getName(), food.getCalories(), food.getProteins(), food.getFats(), food.getCarbohydrates());
+            this.date = date;
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public void setDate(Date date) {
+            this.date = date;
+        }
     }
 }

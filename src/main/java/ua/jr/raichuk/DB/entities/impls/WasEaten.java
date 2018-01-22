@@ -7,7 +7,7 @@ import java.sql.Date;
 /**
  * @author Jesus Raichuk
  */
-public class WasEaten implements Entity {
+public class WasEaten implements Entity, Comparable {
     private int idWE;
     private int idP;
     private int idF;
@@ -96,5 +96,12 @@ public class WasEaten implements Entity {
     @Override
     public String getClassName() {
         return "WasEaten";
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Date objDate = ((WasEaten)o).getDateWE();
+
+        return (int)(this.getDateWE().getTime() - objDate.getTime());
     }
 }
