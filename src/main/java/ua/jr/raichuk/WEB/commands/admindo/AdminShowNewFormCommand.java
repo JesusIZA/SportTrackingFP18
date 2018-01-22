@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Command show empty form for adding new cortege
+ *
  * @author Jesus Raichuk
  */
 public abstract class AdminShowNewFormCommand implements Command {

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * Command show tracking page
+ *
  * @author Jesus Raichuk
  */
 public class TrackingCommand implements Command {

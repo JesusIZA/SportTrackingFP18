@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Command insert new cortege into DB
+ *
  * @author Jesus Raichuk
  */
 public abstract class AdminInsertCommand<T> implements Command {

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Command update cortege is needed
+ *
  * @author Jesus Raichuk
  */
 public abstract class AdminUpdateCommand<T> implements Command {

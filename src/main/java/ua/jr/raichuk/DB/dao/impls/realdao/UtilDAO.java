@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Utils for comfort work with DB
+ * Combined and applied DAO methods
+ *
  * @author Jesus Raichuk
  */
 public class UtilDAO{
@@ -18,6 +21,13 @@ public class UtilDAO{
 
     UtilDAO(){}
 
+    /**
+     * Search user by login
+     * @param login - user login
+     * @param con - connection to DB
+     * @return User - user with login is deed
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public User findUserByLogin(String login, Connection con) throws DBException{
         Connection connection = con;
 
@@ -43,6 +53,13 @@ public class UtilDAO{
         return entity;
     }
 
+    /**
+     * Search food by name
+     * @param name - food name
+     * @param con - connection to DB
+     * @return Food - food was locking fo
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public Food findFoodByName(String name, Connection con)  throws DBException{
         Connection connection = con;
 
@@ -67,6 +84,13 @@ public class UtilDAO{
         return entity;
     }
 
+    /**
+     * Search users links by login
+     * @param login - user login
+     * @param connection - connection to DB
+     * @return Link - user links
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public Link findLinkByLogin(String login, Connection connection) throws DBException {
         PreparedStatement preparedStatement = null;
         String sqlFindLink = "SELECT * FROM " + new LinkCRUD().getTableName() + " WHERE " + new UserCRUD().getTableIdRowName() + "=?";
@@ -100,6 +124,13 @@ public class UtilDAO{
         return entity;
     }
 
+    /**
+     * Search all food were eaten users by user login
+     * @param login - user login
+     * @param connection - connection to DB
+     * @return - List WasEaten - list foods were eaten the user
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public List<WasEaten> findWasEatenByLogin(String login, Connection connection) throws DBException {
         PreparedStatement preparedStatement = null;
         String sqlFindWasEaten = "SELECT * FROM " + new WasEatenCRUD().getTableName() + " WHERE " + new ProfileCRUD().getTableIdRowName() + "=?";
@@ -130,6 +161,13 @@ public class UtilDAO{
         return entities;
     }
 
+    /**
+     * Search profile data (Profile) by user login
+     * @param login - user login
+     * @param connection - connection to DB
+     * @return Profile - profile information
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public Profile findProfileByLogin(String login, Connection connection) throws DBException {
         Profile entity = null;
         Link link = DAOFactory.getInstance().getUtilDAO().findLinkByLogin(login, connection);
@@ -137,6 +175,13 @@ public class UtilDAO{
         return entity;
     }
 
+    /**
+     * Find WasEaten by profile id
+     * @param pId - profile id
+     * @param connection - connection to DB
+     * @return List WasEaten - list date and ids food were eaten
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public List<WasEaten> findWasEatenByProfileId(int pId, Connection connection) throws DBException {
         PreparedStatement preparedStatement = null;
         String sql = "SELECT * FROM " + new WasEatenCRUD().getTableName() + " WHERE " + new ProfileCRUD().getTableIdRowName() + "=?";
@@ -166,12 +211,28 @@ public class UtilDAO{
         return wsL;
     }
 
+    /**
+     * Add new Profile to Site (new User, new Norm, new Profile)
+     * @param user - new User (user data)
+     * @param profile - new Profile (profile data)
+     * @param norm - new Norm (daily norm)
+     * @param connection - connection to DB
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public void addProfile(User user, Profile profile, Norm norm, Connection connection) throws DBException{
         DAOFactory.getInstance().getCRUD(user).add(user, connection);
         DAOFactory.getInstance().getCRUD(profile).add(profile, connection);
         DAOFactory.getInstance().getCRUD(norm).add(norm, connection);
     }
 
+    /**
+     * Update user data (login and password)
+     * @param login - old user login
+     * @param newLogin - new user login
+     * @param newPassword - new user password
+     * @param connection - connection to DB
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public void editUser(String login, String newLogin, String newPassword, Connection connection) throws DBException {
         User user = DAOFactory.getInstance().getUtilDAO().findUserByLogin(login, connection);
 
@@ -181,6 +242,16 @@ public class UtilDAO{
         DAOFactory.getInstance().getCRUD(user).update(user, connection);
     }
 
+    /**
+     * Delete Profile from site (Delete all information about user Profile):
+     * User data
+     * Profile data
+     * Norm data
+     * WasEaten data
+     * @param login - user login
+     * @param connection - connection to DB
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public void deleteProfile(String login, Connection connection) throws DBException {
         Link link = DAOFactory.getInstance().getUtilDAO().findLinkByLogin(login, connection);
         List<WasEaten> listWE = DAOFactory.getInstance().getUtilDAO().findWasEatenByLogin(login, connection);
@@ -205,6 +276,12 @@ public class UtilDAO{
         crud.delete(link.getIdU(), connection);
     }
 
+    /**
+     * Delete each WasEaten item by food id
+     * @param idF - food id
+     * @param connection - connection to DB
+     * @throws DBException - if connection failed or will check SQLException
+     */
     public void deleteWasEatenByFoodId(int idF, Connection connection) throws DBException {
         PreparedStatement preparedStatement = null;
 

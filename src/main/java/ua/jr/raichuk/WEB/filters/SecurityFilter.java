@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Filter that regulates access all query to the servlet dispatcher
+ *
+ * @author Jesus Raichuk
+ */
 public class SecurityFilter implements Filter {
     private static Logger LOGGER = Logger.getLogger(SecurityFilter.class);
 
@@ -26,12 +31,13 @@ public class SecurityFilter implements Filter {
         SecurityConfiguration configuration = SecurityConfiguration.getInstance();
         String command = request.getParameter("command");
         String role = configuration.security(command);
-
+        //All
         if (Objects.equals(role, SecurityConfiguration.ALL)) {
             LOGGER.debug("Filter.Security (SecurityFilter.doFilter()) info : Successful request for ALL.");
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
+        //Users
         if (Objects.equals(role, SecurityConfiguration.AUTH)
                 && Authentication.isUserLogIn(request.getSession())) {
             LOGGER.debug("Filter.Security (SecurityFilter.doFilter()) info : Successful request for AUTH.");
@@ -45,6 +51,7 @@ public class SecurityFilter implements Filter {
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
+        //Admin
         if (Objects.equals(role, SecurityConfiguration.ADMIN)
                 && Authentication.isUserLogIn(request.getSession())
                 && Authentication.isAdmin(request.getSession())) {

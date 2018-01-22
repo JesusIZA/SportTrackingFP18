@@ -15,6 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Command check entered login and password and open:
+ * Error page if data is incorrect
+ * Tracking page if it is user and data is correct
+ * Admin user page if it is admin
+ *
+ * @author Jesus Raichuk
+ */
 public class LoginCommand implements Command {
     private static Logger LOGGER = Logger.getLogger(LoginCommand.class);
     @Override

@@ -28,6 +28,12 @@ public class TrackingService {
 
     private TrackingService(){}
 
+    /**
+     * Get name user by login
+     * @param login - user login
+     * @return String - name of user
+     * @throws TransactionException - if has some problem with DB
+     */
     public String getName(String login) throws TransactionException {
         String ret = "";
         Connection connection = Transaction.startTransaction();
@@ -45,6 +51,12 @@ public class TrackingService {
         return ret;
     }
 
+    /**
+     * Get surname of user by login
+     * @param login - user login
+     * @return String - surname of user
+     * @throws TransactionException - if has some problem with DB
+     */
     public String getSurname(String login) throws TransactionException {
         String ret = "";
         Connection connection = Transaction.startTransaction();
@@ -62,6 +74,12 @@ public class TrackingService {
         return ret;
     }
 
+    /**
+     * Get nor of user (calories and proteins by day)
+     * @param login - user login
+     * @return Norm - user daily norm
+     * @throws TransactionException - if has some problem with DB
+     */
     public Norm getNorm(String login) throws TransactionException {
         Norm ret = null;
         Connection connection = Transaction.startTransaction();
@@ -92,6 +110,12 @@ public class TrackingService {
         return ret;
     }
 
+    /**
+     * Get quantity of calories and proteins user had today
+     * @param login - user login
+     * @return - Quantity of calories and proteins wrapped into Norm class
+     * @throws TransactionException - if has some problem with DB
+     */
     public Norm getForNow(String login) throws TransactionException {
         Norm forNow = new Norm();
         int calories = 0;
@@ -108,6 +132,14 @@ public class TrackingService {
         return forNow;
     }
 
+    /**
+     * return list of foods user had today
+     * @param login - user login
+     * @param start - start item (for pagination)
+     * @param quantity - quantity items by page (for pagination)
+     * @return List of food
+     * @throws TransactionException - if has some problem with DB
+     */
     public List<Food> getEatenToday(String login, int start, int quantity) throws TransactionException {
         List<Food> eatenToday = new ArrayList<Food>();
         Connection connection = Transaction.startTransaction();
@@ -145,6 +177,12 @@ public class TrackingService {
         return eatenToday;
     }
 
+    /**
+     * Get message is needed to show user for control having food
+     * @param norm - daily norm of user
+     * @param forNow - calories and proteins user had by now
+     * @return String - message
+     */
     public String getMessage(Norm norm, Norm forNow) {
         String mass = "You can eat more! It is all right!";
         int status = getStatus(norm, forNow);
@@ -184,6 +222,11 @@ public class TrackingService {
         else return -1;
     }
 
+    /**
+     * Get all foods items have in DB
+     * @return - List of foods
+     * @throws TransactionException - if has some problem with DB
+     */
     public List<Food> getAllFoods() throws TransactionException {
         List<Food> foods = new ArrayList<Food>();
         Connection connection = Transaction.startTransaction();

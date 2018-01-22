@@ -7,8 +7,9 @@ import ua.jr.raichuk.DB.entities.Entity;
 import ua.jr.raichuk.DB.transactions.Transaction;
 
 /**
- * DAO Factory class
+ * DAO (CRUD) Factory class
  * Factory, Singleton
+ * Return CRUD for entity type is deed
  *
  * @author Jesus Raichuk
  */

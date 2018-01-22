@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Command show edit form for cortege is needed
+ *
  * @author Jesus Raichuk
  */
 public abstract class AdminShowEditFormCommand<T> implements Command {

@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import ua.jr.raichuk.DB.entities.Entity;
 
 /**
+ * Factory gat service for each of types corteges is needed
+ *
  * @author Jesus Raichuk
  */
 public abstract class AdminServiceFactory {

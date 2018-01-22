@@ -19,6 +19,14 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * Command register new profile:
+ * Add new user item
+ * Add new profile item
+ * Add new norm item
+ *
+ * @author Jesus Raichuk
+ */
 public class RegistrationCommand implements Command {
     private static Logger LOGGER = Logger.getLogger(RegistrationCommand.class);
     @Override

@@ -4,6 +4,8 @@ import javax.servlet.*;
 import java.io.IOException;
 
 /**
+ * Filter set encoding is needed
+ *
  * @author Jesus Raichuk
  */
 public class EncodingFilter implements Filter {

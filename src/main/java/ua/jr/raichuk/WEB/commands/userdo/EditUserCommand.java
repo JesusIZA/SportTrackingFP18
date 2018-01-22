@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
+ * Command change user data by user if it is valid
+ *
  * @author Jesus Raichuk
  */
 public class EditUserCommand implements Command {

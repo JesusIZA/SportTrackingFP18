@@ -12,13 +12,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Class Generic for DAO
+ * Class Generic for CRUD
  *
  * @author Jesus Raichuk
  */
 public abstract class CCRUD<T> extends CRUD<T> {
     private static Logger LOGGER = Logger.getLogger(CCRUD.class);
 
+    /**
+     * Add entity to DB
+     * @param entity - entity will add
+     * @param con - connection to DB
+     * @throws DBException - if connection failed or will check SQLException
+     */
     @Override
     public void add(T entity, Connection con) throws DBException{
         Connection connection = con;
@@ -55,7 +61,12 @@ public abstract class CCRUD<T> extends CRUD<T> {
         }
     }
 
-
+    /**
+     * Find all entities in table
+     * @param con - connection to DB
+     * @return List of entities are need
+     * @throws DBException - if connection failed or will check SQLException
+     */
     @Override
     public List<T> findAll(Connection con) throws DBException {
         Connection connection = con;
@@ -82,6 +93,12 @@ public abstract class CCRUD<T> extends CRUD<T> {
         return entities;
     }
 
+    /**
+     * Return last id in table
+     * @param con - connection to DB
+     * @return int value - last id in table
+     * @throws DBException - if connection failed or will check SQLException
+     */
     @Override
     public int getLastId(Connection con) throws DBException {
         Connection connection = con;
@@ -113,6 +130,12 @@ public abstract class CCRUD<T> extends CRUD<T> {
         return lastId;
     }
 
+    /**
+     * Return List all ids form table
+     * @param con - connection to DB
+     * @return List integers - ids from table
+     * @throws DBException - if connection failed or will check SQLException
+     */
     @Override
     public List<Integer> getAllIds(Connection con) throws DBException {
         Connection connection = con;
@@ -136,6 +159,13 @@ public abstract class CCRUD<T> extends CRUD<T> {
         return ids;
     }
 
+    /**
+     * Return entity in table with id look for
+     * @param id - id look for
+     * @param con - connection to DB
+     * @return entity
+     * @throws DBException - if connection failed or will check SQLException
+     */
     @Override
     public T findById(int id, Connection con) throws DBException {
         Connection connection = con;
@@ -162,6 +192,12 @@ public abstract class CCRUD<T> extends CRUD<T> {
         return entity;
     }
 
+    /**
+     * Update entity is need
+     * @param entity - need update
+     * @param con - connection to DB
+     * @throws DBException - if connection failed or will check SQLException
+     */
     @Override
     public void update(T entity, Connection con) throws DBException {
         Connection connection = con;
@@ -195,6 +231,12 @@ public abstract class CCRUD<T> extends CRUD<T> {
         }
     }
 
+    /**
+     * Delete cortege from table by id
+     * @param id - cortege will delete id
+     * @param con - connection to DB
+     * @throws DBException - if connection failed or will check SQLException
+     */
     @Override
     public void delete(int id, Connection con) throws DBException {
         Connection connection = con;
@@ -215,13 +257,48 @@ public abstract class CCRUD<T> extends CRUD<T> {
         }
     }
 
+    /**
+     * Get table name in DB will process
+     * @return String - table name
+     */
     protected abstract String getTableName();
+    /**
+     * Get table id row name in DB will process
+     * @return String - table id field name
+     */
     protected abstract String getTableIdRowName();
+    /**
+     * Get all table rows name in DB will process
+     * @return List string - table row names
+     */
     protected abstract List<String> getTableRowsNames();
 
     protected abstract void parseResultSetGeneratedKeys(ResultSet generatedKeys, T entity) throws DBException;
 
+    /**
+     * Take id from entity and fill him prepare statement
+     * @param preparedStatement - prepare statement will fill
+     * @param t - entity is need for filling
+     * @param from - start value (parameters need start fill data in prepare statement)
+     * @return PrepareStatement - full id statement
+     * @throws SQLException
+     */
     protected abstract PreparedStatement getFullIdValuePreparedStatement(PreparedStatement preparedStatement, T t, int from) throws SQLException;
+    /**
+     * Take secondary (not id) data from entity and fill them prepare statement
+     * @param preparedStatement - prepare statement will fill
+     * @param t - entity is need for filling
+     * @param from - start value (parameters need start fill secondary data in prepare statement)
+     * @return PrepareStatement - full secondary data statement
+     * @throws SQLException
+     */
     protected abstract PreparedStatement getFullSecondaryValuesPreparedStatement(PreparedStatement preparedStatement, T t, int from) throws SQLException;
+
+    /**
+     * Take result set with data and fill it entity
+     * @param resultSet - result set with data
+     * @return entity - full entity
+     * @throws SQLException
+     */
     protected abstract T fillEntity(ResultSet resultSet) throws SQLException;
 }

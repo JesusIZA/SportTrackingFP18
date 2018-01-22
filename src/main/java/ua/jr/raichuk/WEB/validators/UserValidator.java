@@ -11,7 +11,12 @@ import ua.jr.raichuk.Exceptions.TransactionException;
  */
 public abstract class UserValidator {
     private static Logger LOGGER = Logger.getLogger(UserValidator.class);
-
+    /**
+     * Get true if id does exist and false if does not exist
+     * @param id - id will search
+     * @return boolean value - exist or not
+     * @throws DataException - id data is incorrect
+     */
     public static boolean isIdUExisting(int id) throws DataException {
         try {
             return EnterDataValidator.isIdExisting(id, new User());
@@ -21,6 +26,13 @@ public abstract class UserValidator {
         }
     }
 
+    /**
+     * Check user login and password for correct value
+     * @param login - user login
+     * @param password - user password
+     * @return - is data valid or not
+     * @throws DataException - is data is illegal
+     */
     public static boolean isValid(String login, String password) throws DataException {
         if (!EnterDataValidator.isValidLogin(login)) {
             throw new DataException("Login is incorrect");

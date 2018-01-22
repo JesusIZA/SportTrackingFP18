@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Command delete one cortege from DB by id
+ *
  * @author Jesus Raichuk
  */
 public abstract class AdminDeleteCommand<T> implements Command {

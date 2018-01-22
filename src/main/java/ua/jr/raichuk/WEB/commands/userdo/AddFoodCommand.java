@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Command add new food item into list of food in DB if entered data is valid
+ *
  * @author Jesus Raichuk
  */
 public class AddFoodCommand implements Command {

@@ -15,6 +15,11 @@ public abstract class Authentication {
     private Authentication() {
     }
 
+    /**
+     * Return user status (is log in or not)
+     * @param session - Current session
+     * @return boolean status - log in or not
+     */
     public static boolean isUserLogIn(HttpSession session){
         String login = (String)session.getAttribute("login");
         String password = "";
@@ -42,6 +47,11 @@ public abstract class Authentication {
         return isIn;
     }
 
+    /**
+     * Return user role (is admin or not)
+     * @param session - Current session
+     * @return boolean status - admin or not
+     */
     public static boolean isAdmin(HttpSession session) {
         String login = (String)session.getAttribute("login");
         if(Objects.equals(login, "Admin") || Objects.equals(login, "Admin2"))

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Command Show all cortege from table
+ *
  * @author Jesus Raichuk
  */
 public abstract class AdminShowListCommand<T> implements Command {

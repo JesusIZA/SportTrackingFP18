@@ -21,6 +21,13 @@ public class LoginService {
 
     private LoginService(){}
 
+    /**
+     * Verify is user login and password right
+     * @param login - login user
+     * @param password - password useer
+     * @return boolean value - is verify or not
+     * @throws TransactionException - if has some problem with DB
+     */
     public boolean verify(String login, String password) throws TransactionException {
         Connection connection = Transaction.startTransaction();
         boolean ret = false;

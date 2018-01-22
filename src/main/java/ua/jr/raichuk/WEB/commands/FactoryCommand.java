@@ -11,6 +11,11 @@ import ua.jr.raichuk.WEB.commands.userdo.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Factory return ready command for user queries by the site
+ *
+ * @author Jesus Raichuk
+ */
 public class FactoryCommand {
     private static final FactoryCommand factoryCommand = new FactoryCommand();
 
@@ -71,7 +76,9 @@ public class FactoryCommand {
     public static final String ADMIN_EDIT_PROFILE = "admineditprofile";
     public static final String ADMIN_DELETE_PROFILE = "admindeleteprofile";
 
-
+    /**
+     * Map all commands
+     */
     private Map<String,Command> commandMap = new HashMap<>();
 
     private FactoryCommand() {

@@ -17,6 +17,13 @@ public class UserService extends AdminService<User>{
 
     UserService(){}
 
+    /**
+     * Edit user data (login, password)
+     * @param login - old user login
+     * @param newLogin - new user login
+     * @param newPassword - new user password
+     * @throws TransactionException - if has some problem with DB
+     */
     public void edit(String login, String newLogin, String newPassword) throws TransactionException {
         Connection connection = Transaction.startTransaction();
         try{

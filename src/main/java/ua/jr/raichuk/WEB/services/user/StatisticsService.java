@@ -29,6 +29,16 @@ public class StatisticsService {
 
     private StatisticsService(){}
 
+    /**
+     * Get all foods were eaten user by login is needed
+     * @param login - user login
+     * @param from - start date
+     * @param to - end date
+     * @param start - start item (for pagination)
+     * @param quantity - quantity items by page (for pagination)
+     * @return List with foods and date when it were eaten
+     * @throws TransactionException - if has some problem with DB
+     */
     public List<FoodWithDate> getFoodsByDateRangeAndLogin(String login, Date from, Date to, int start, int quantity) throws TransactionException {
         List<FoodWithDate> fWD = new LinkedList<FoodWithDate>();
         Connection connection = Transaction.startTransaction();
@@ -68,6 +78,14 @@ public class StatisticsService {
         return fWD;
     }
 
+    /**
+     * Get all dates when user had some food
+     * @param login - user login
+     * @param from - start date
+     * @param to - end date
+     * @return List of dates
+     * @throws TransactionException - if has some problem with DB
+     */
     public List<Date> getAllDatesRangeByLogin(String login, Date from, Date to) throws TransactionException {
         Set<Date> dates = new HashSet<Date>();
         Connection connection = Transaction.startTransaction();
@@ -94,6 +112,9 @@ public class StatisticsService {
         return ret;
     }
 
+    /**
+     * Inner class realize food and date when one was eaten
+     */
     public static class FoodWithDate extends Food{
         private Date date;
         public FoodWithDate(Food food, Date date) {

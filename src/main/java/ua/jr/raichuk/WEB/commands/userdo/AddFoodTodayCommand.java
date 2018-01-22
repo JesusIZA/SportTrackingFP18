@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Command add new item to WasEaten with today date and profile id into table in DB if entered data is valid
+ *
  * @author Jesus Raichuk
  */
 public class AddFoodTodayCommand implements Command {

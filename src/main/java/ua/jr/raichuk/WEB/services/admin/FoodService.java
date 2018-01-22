@@ -24,6 +24,12 @@ public class FoodService extends AdminService<Food> {
     public Entity getEmptyClass() {
         return new Food();
     }
+
+    /**
+     * Realized cascading delete from DB for food cortege
+     * @param id - cortege id
+     * @throws TransactionException
+     */
     @Override
     public void delete(int id) throws TransactionException {
         Connection connection = Transaction.startTransaction();
@@ -39,6 +45,12 @@ public class FoodService extends AdminService<Food> {
         }
     }
 
+    /**
+     * Realized adding new food to eaten today
+     * @param name - food name
+     * @param login - user login
+     * @throws TransactionException - if has some problem with DB
+     */
     public void addFoodToday(String name, String login) throws TransactionException {
         Connection connection = Transaction.startTransaction();
         try {

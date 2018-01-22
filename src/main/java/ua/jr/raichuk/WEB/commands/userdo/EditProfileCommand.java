@@ -18,6 +18,8 @@ import java.sql.Date;
 import java.util.Objects;
 
 /**
+ * Command change profile data if it is valid
+ *
  * @author Jesus Raichuk
  */
 public class EditProfileCommand implements Command {

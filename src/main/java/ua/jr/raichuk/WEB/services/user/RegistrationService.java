@@ -22,6 +22,12 @@ public class RegistrationService {
 
     private RegistrationService(){}
 
+    /**
+     * Register new profile
+     * @param user - new user
+     * @param profile - new profile
+     * @throws TransactionException - if has some problem with DB
+     */
     public void register(User user, Profile profile) throws TransactionException {
         Connection connection = Transaction.startTransaction();
         try {

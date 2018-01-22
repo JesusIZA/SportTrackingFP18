@@ -10,7 +10,12 @@ import ua.jr.raichuk.Exceptions.TransactionException;
  */
 public abstract class LinkValidator {
     private static Logger LOGGER = Logger.getLogger(LinkValidator.class);
-
+    /**
+     * Get true if id does exist and false if does not exist
+     * @param id - id will search
+     * @return boolean value - exist or not
+     * @throws DataException - id data is incorrect
+     */
     public static boolean isIdLExisting(int id) throws DataException {
         try {
             return EnterDataValidator.isIdExisting(id, new User());

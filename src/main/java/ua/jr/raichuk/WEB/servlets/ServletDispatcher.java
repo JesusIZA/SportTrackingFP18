@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Servlet take each query from users and execute command one need if it is posible
+ *
+ * @author Jesus Raichuk
+ */
 public class ServletDispatcher extends HttpServlet{
     private static Logger LOGGER = Logger.getLogger(ServletDispatcher.class);
 
@@ -32,6 +37,11 @@ public class ServletDispatcher extends HttpServlet{
 
     }
 
+    /**
+     * Execute command user need if it is posible
+     * @param req - user request
+     * @param resp - response user
+     */
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) {
         FactoryCommand factory = FactoryCommand.getInstance();
         Command command = factory.getCommand((String) req.getParameter("command"));

@@ -8,6 +8,11 @@ import java.sql.Date;
  * @author Jesus Raichuk
  */
 public abstract class UtilService{
+    /**
+     * Count calories quantity user need by physic parameters
+     * @param profile - user physic parameters
+     * @return number calories
+     */
     public static int getNormCalories(Profile profile){
         double ret = 0.0;
 
@@ -27,6 +32,11 @@ public abstract class UtilService{
 
         return (int)ret;
     }
+    /**
+     * Count proteins quantity user need by physic parameters
+     * @param profile - user physic parameters
+     * @return number proteins
+     */
     public static int getNormProteins(Profile profile){
         double ret = 0.0;
         if(profile.getSex().equals("male")){

@@ -11,10 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Service for admin use (work with DB tables - corteges)
+ *
  * @author Jesus Raichuk
  */
 public abstract class AdminService<T> {
     private static Logger LOGGER = Logger.getLogger(AdminService.class);
+
+    /**
+     * Add new cortege to DB
+     * @param t - cortege
+     * @throws TransactionException - if it is not posible
+     */
     public void add(T t) throws TransactionException {
         Connection connection = Transaction.startTransaction();
         try {
@@ -27,6 +35,11 @@ public abstract class AdminService<T> {
             Transaction.endTransaction(connection);
         }
     }
+    /**
+     * Update cortege into DB
+     * @param t - cortege
+     * @throws TransactionException - if it is not posible
+     */
     public void update(T t) throws TransactionException {
         Connection connection = Transaction.startTransaction();
         try {
@@ -39,6 +52,11 @@ public abstract class AdminService<T> {
             Transaction.endTransaction(connection);
         }
     }
+    /**
+     * Delete cortege from DB
+     * @param id - cortege id
+     * @throws TransactionException - if it is not posible
+     */
     public void delete(int id) throws TransactionException {
         Connection connection = Transaction.startTransaction();
         try {
@@ -51,7 +69,10 @@ public abstract class AdminService<T> {
             Transaction.endTransaction(connection);
         }
     }
-
+    /**
+     * Get all corteges in DB
+     * @throws TransactionException - if it is not posible
+     */
     public List<T> getAll() throws TransactionException {
         Connection connection = Transaction.startTransaction();
         List<T> ts = new ArrayList<T>();
@@ -66,7 +87,11 @@ public abstract class AdminService<T> {
         }
         return ts;
     }
-
+    /**
+     * Get cortege from DB by id
+     * @param id - cortege id
+     * @throws TransactionException - if it is not posible
+     */
     public T getById(int id) throws TransactionException {
         Connection connection = Transaction.startTransaction();
         T t = (T) getEmptyClass();

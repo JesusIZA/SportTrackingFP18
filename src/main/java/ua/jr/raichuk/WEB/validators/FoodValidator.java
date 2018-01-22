@@ -10,7 +10,12 @@ import ua.jr.raichuk.Exceptions.TransactionException;
  */
 public abstract class FoodValidator {
     private static Logger LOGGER = Logger.getLogger(FoodValidator.class);
-
+    /**
+     * Get true if id does exist and false if does not exist
+     * @param id - id will search
+     * @return boolean value - exist or not
+     * @throws DataException - id data is incorrect
+     */
     public static boolean isIdFExisting(int id) throws DataException {
         try {
             return EnterDataValidator.isIdExisting(id, new Food());
@@ -19,6 +24,17 @@ public abstract class FoodValidator {
             throw new DataException("Id food not found");
         }
     }
+
+    /**
+     * Check food name, calories, proteins, fats and carbohydrates for correct value
+     * @param name - food name
+     * @param calories - calories quantity
+     * @param proteins - proteins quantity
+     * @param fats - fats quantity
+     * @param carbohydrates - carbohydrates quantity
+     * @return boolean value - is data correct or not
+     * @throws DataException - if data is illegal
+     */
     public static boolean isValid(String name, double calories, double proteins, double fats, double carbohydrates) throws DataException{
         if(!EnterDataValidator.isValidFoodName(name)) {
             throw new DataException("Name of food is incorrect");

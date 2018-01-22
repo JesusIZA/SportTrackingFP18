@@ -16,6 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Command delete everything about user from DB:
+ * User information
+ * Profile information
+ * Was eaten information
+ * Norm information
+ * All link about tables
+ *
  * @author Jesus Raichuk
  */
 public class DeleteAllProfileCommand implements Command {

@@ -11,6 +11,12 @@ import java.sql.Date; /**
 public abstract class WasEatenValidator {
     private static Logger LOGGER = Logger.getLogger(WasEatenValidator.class);
 
+    /**
+     * Get true if id does exist and false if does not exist
+     * @param id - id will search
+     * @return boolean value - exist or not
+     * @throws DataException - id data is incorrect
+     */
     public static boolean isIdWEExisting(int id) throws DataException {
         try {
             return EnterDataValidator.isIdExisting(id, new WasEaten());

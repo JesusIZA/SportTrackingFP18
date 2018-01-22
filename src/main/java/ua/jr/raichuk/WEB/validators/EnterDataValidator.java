@@ -21,11 +21,16 @@ import java.util.regex.Pattern;
  */
 public abstract class EnterDataValidator {
     private static Logger LOGGER = Logger.getLogger(EnterDataValidator.class);
-
+    //patterns
+    //login
     public static final String LOGIN_PATTERN = "[A-Za-z]+[A-Za-z0-9]*";
+    //password
     public static final String PASSWORD_PATTERN = "[A-za-z0-9]+";
+    //name and surname
     public static final String NAME_PATTERN = "[A-ZА-Яa-zа-я]+";
+    //food name
     public static final String FOOD_NAME_PATTERN = "([A-ZА-Яa-zа-я0-9_]+[\\s]?)+";
+    //sex
     public static final String SEX_PATTERN = "male|female";
 
     public static boolean isValidLogin(String word) throws DataException {

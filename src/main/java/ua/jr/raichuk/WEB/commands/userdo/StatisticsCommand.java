@@ -16,6 +16,8 @@ import java.sql.Date;
 import java.util.*;
 
 /**
+ * Command show statistics by the time user need
+ *
  * @author Jesus Raichuk
  */
 public class StatisticsCommand implements Command {

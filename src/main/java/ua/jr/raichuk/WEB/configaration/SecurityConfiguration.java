@@ -7,9 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Configure class give access for each role
+ *
+ * @author Jesus Raichuk
+ */
 public class SecurityConfiguration {
     private static final SecurityConfiguration config = new SecurityConfiguration();
-
+    //roles
     public static final String ALL = "all";
     public static final String AUTH = "authorised";
     public static final String ADMIN = "administrator";
@@ -20,6 +25,9 @@ public class SecurityConfiguration {
         return config;
     }
 
+    /**
+     * Map with list roles and commands they can call
+     */
     private SecurityConfiguration() {
         grant.put(FactoryCommand.LOGIN, ALL);
         grant.put(FactoryCommand.REGISTER, ALL);

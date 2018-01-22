@@ -20,6 +20,12 @@ public class ProfileService extends AdminService<Profile> {
 
     ProfileService(){}
 
+    /**
+     * Realized right editing profile (edit norm if it is needed also)
+     * @param login - user login
+     * @param profile - profile need update
+     * @throws TransactionException
+     */
     public void editProfile(String login, Profile profile) throws TransactionException{
         Connection connection = Transaction.startTransaction();
         try {
@@ -49,6 +55,12 @@ public class ProfileService extends AdminService<Profile> {
         }
     }
 
+    /**
+     * Get profile information by login
+     * @param login - user login
+     * @return - Profile - profile information
+     * @throws TransactionException - if has some problem with DB
+     */
     public Profile getProfile(String login) throws TransactionException{
         Profile profile = null;
         Connection connection = Transaction.startTransaction();
@@ -66,6 +78,11 @@ public class ProfileService extends AdminService<Profile> {
         return profile;
     }
 
+    /**
+     * Delete all profile information
+     * @param login - user login
+     * @throws TransactionException - if has some problem with DB
+     */
     public void deleteProfile(String login) throws TransactionException {Profile profile = null;
         Connection connection = Transaction.startTransaction();
         try {
