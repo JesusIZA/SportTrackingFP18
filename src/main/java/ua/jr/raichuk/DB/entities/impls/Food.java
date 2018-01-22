@@ -88,10 +88,10 @@ public class Food implements Entity {
         Food food = (Food) o;
 
         if (idF != food.idF) return false;
-        if (Double.compare(food.calories, calories) != 0) return false;
-        if (Double.compare(food.proteins, proteins) != 0) return false;
-        if (Double.compare(food.fats, fats) != 0) return false;
-        if (Double.compare(food.carbohydrates, carbohydrates) != 0) return false;
+        if (calories > food.getCalories() + 0.01 || calories < food.getCalories() - 0.01) return false;
+        if (proteins > food.getProteins() + 0.01 || proteins < food.getProteins() - 0.01) return false;
+        if (fats > food.getFats() + 0.01 || fats < food.getFats() - 0.01) return false;
+        if (carbohydrates > food.getCarbohydrates() + 0.01 || carbohydrates < food.getCarbohydrates() - 0.01) return false;
         return name != null ? name.equals(food.name) : food.name == null;
     }
 

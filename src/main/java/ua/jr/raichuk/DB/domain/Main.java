@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class for testing DAO
@@ -161,10 +162,15 @@ public class Main{
 
         //DAOFactory.getInstance().getUtilDAO().deleteProfile("Jesus2", connection);
 
-        List<WasEaten> we = DAOFactory.getInstance().getUtilDAO().findWasEatenByProfileId(1, connection);
+        /*List<WasEaten> we = DAOFactory.getInstance().getUtilDAO().findWasEatenByProfileId(1, connection);
         PrintLists.printListByRows(we);
 
-        UtilSimpleConnection.stopConnection(connection);
+        UtilSimpleConnection.stopConnection(connection);*/
+
+        Food f1 = new Food("Test food",123.4, 23.4, 21.0, 19.8);
+        Food f2 = new Food("Test food",123.4, 23.4, 21.0, 19.8);
+
+        System.out.println(Objects.equals(f1, f2));
     }
 
 }

@@ -24,7 +24,7 @@ public abstract class EnterDataValidator {
 
     public static final String LOGIN_PATTERN = "[A-Za-z]+[A-Za-z0-9]*";
     public static final String PASSWORD_PATTERN = "[A-za-z0-9]+";
-    public static final String NAME_PATTERN = "[A-ZА-Яa-zа-я_]+";
+    public static final String NAME_PATTERN = "[A-ZА-Яa-zа-я]+";
     public static final String FOOD_NAME_PATTERN = "([A-ZА-Яa-zа-я0-9_]+[\\s]?)+";
     public static final String SEX_PATTERN = "male|female";
 

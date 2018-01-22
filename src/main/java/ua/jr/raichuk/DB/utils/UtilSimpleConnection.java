@@ -13,8 +13,8 @@ import java.sql.SQLException;
 public abstract class UtilSimpleConnection {
     private static Logger LOGGER = Logger.getLogger(UtilSimpleConnection.class);
 
-    private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/sportt18db";
+    private static final String DB_DRIVER = "org.h2.Driver";
+    private static final String DB_URL = "jdbc:h2:~/sportt18";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "root";
 
