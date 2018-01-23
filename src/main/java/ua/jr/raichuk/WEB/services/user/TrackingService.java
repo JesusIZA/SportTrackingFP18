@@ -184,14 +184,14 @@ public class TrackingService {
      * @return String - message
      */
     public String getMessage(Norm norm, Norm forNow) {
-        String mass = "You can eat more! It is all right!";
+        String mass = "good";
         int status = getStatus(norm, forNow);
         switch (status){
             case -1: {
-                mass = "Today enough. You've got too much!";
+                mass = "bad";
                 break;
             }case 0: {
-                mass = "This is your norm. Pay attention!";
+                mass = "norm";
                 break;
             }
         }

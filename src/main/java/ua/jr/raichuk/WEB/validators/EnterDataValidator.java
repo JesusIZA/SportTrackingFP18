@@ -121,6 +121,18 @@ public abstract class EnterDataValidator {
         return false;
     }
 
+    public static boolean isValidLanguage(String language) {
+        switch (language) {
+            case "ua_UA":
+                return true;
+            case "ru_RU":
+                return true;
+            case "en_EN":
+                return true;
+        }
+        return false;
+    }
+
     private static boolean validTextField(String word, String pattern, int length) throws DataException {
         try{
                 if(!Objects.equals(word, "") && !Objects.isNull(word) && word.length() < length) {
