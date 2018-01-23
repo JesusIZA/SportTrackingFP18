@@ -23,6 +23,7 @@ import java.util.Objects;
  */
 public class TrackingCommand implements Command {
     private static Logger LOGGER = Logger.getLogger(TrackingCommand.class);
+    public static final int ITEMS_BY_PAGE = 5;
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("login");
@@ -37,7 +38,7 @@ public class TrackingCommand implements Command {
                 request.getSession().setAttribute("name", name);
             }
 
-            int quantity = 5;
+
             int start = 0;
             if(!Objects.isNull(request.getSession().getAttribute("startT")) &&
                     !Objects.equals(request.getSession().getAttribute("startT"), "")){
@@ -47,16 +48,16 @@ public class TrackingCommand implements Command {
             String goPage = request.getParameter("doPage");
             if(!Objects.isNull(goPage)) {
                 if(goPage.equals("PREV")){
-                    start -= quantity;
+                    start -= ITEMS_BY_PAGE;
                 } else {
-                    start += quantity;
+                    start += ITEMS_BY_PAGE;
                 }
             }
 
 
             Norm norm = trackingService.getNorm(login);
             Norm forNow = trackingService.getForNow(login);
-            List<Food> eatenToday = trackingService.getEatenToday(login, start, quantity);
+            List<Food> eatenToday = trackingService.getEatenToday(login, start, ITEMS_BY_PAGE);
             String message = trackingService.getMessage(norm, forNow);
             String color = trackingService.getColor(norm, forNow);
             List<Food> foods = trackingService.getAllFoods();
@@ -82,7 +83,7 @@ public class TrackingCommand implements Command {
                 foods.add(tf);
             }
 
-            if(start > eatenToday.size()) start = eatenToday.size() - (eatenToday.size()%quantity);
+            if(start > eatenToday.size()) start = eatenToday.size() - (eatenToday.size()%ITEMS_BY_PAGE);
             if(start < 0) start = 0;
             request.getSession().setAttribute("startT", start);
 

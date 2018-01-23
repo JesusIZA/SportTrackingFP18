@@ -6,6 +6,7 @@ import ua.jr.raichuk.DB.entities.Entity;
  * @author Jesus Raichuk
  */
 public class Food implements Entity {
+    public static final double PRECISION = 0.01;
     private int idF;
     private String name;
     private double calories;
@@ -88,10 +89,10 @@ public class Food implements Entity {
         Food food = (Food) o;
 
         if (idF != food.idF) return false;
-        if (calories > food.getCalories() + 0.01 || calories < food.getCalories() - 0.01) return false;
-        if (proteins > food.getProteins() + 0.01 || proteins < food.getProteins() - 0.01) return false;
-        if (fats > food.getFats() + 0.01 || fats < food.getFats() - 0.01) return false;
-        if (carbohydrates > food.getCarbohydrates() + 0.01 || carbohydrates < food.getCarbohydrates() - 0.01) return false;
+        if (calories > food.getCalories() + PRECISION || calories < food.getCalories() - PRECISION) return false;
+        if (proteins > food.getProteins() + PRECISION || proteins < food.getProteins() - PRECISION) return false;
+        if (fats > food.getFats() + PRECISION || fats < food.getFats() - PRECISION) return false;
+        if (carbohydrates > food.getCarbohydrates() + PRECISION || carbohydrates < food.getCarbohydrates() - PRECISION) return false;
         return name != null ? name.equals(food.name) : food.name == null;
     }
 
