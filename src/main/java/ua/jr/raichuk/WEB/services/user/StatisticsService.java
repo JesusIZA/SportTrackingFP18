@@ -8,6 +8,7 @@ import ua.jr.raichuk.DB.entities.impls.WasEaten;
 import ua.jr.raichuk.DB.transactions.Transaction;
 import ua.jr.raichuk.Exceptions.TransactionException;
 import ua.jr.raichuk.Helpers.lists.PrintLists;
+import ua.jr.raichuk.WEB.commands.userdo.StatisticsCommand;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -34,12 +35,10 @@ public class StatisticsService {
      * @param login - user login
      * @param from - start date
      * @param to - end date
-     * @param start - start item (for pagination)
-     * @param quantity - quantity items by page (for pagination)
      * @return List with foods and date when it were eaten
      * @throws TransactionException - if has some problem with DB
      */
-    public List<FoodWithDate> getFoodsByDateRangeAndLogin(String login, Date from, Date to, int start, int quantity) throws TransactionException {
+    public List<FoodWithDate> getFoodsByDateRangeAndLogin(String login, Date from, Date to) throws TransactionException {
         List<FoodWithDate> fWD = new LinkedList<FoodWithDate>();
         Connection connection = Transaction.startTransaction();
         try{
@@ -61,10 +60,14 @@ public class StatisticsService {
             }
 
             //Pagination
-            if(start > allByRange.size()) start = allByRange.size() - (allByRange.size()%quantity);
-            if(start < 0) start = 0;
+            if (StatisticsCommand.START_ITEM == allByRange.size())
+                StatisticsCommand.START_ITEM = allByRange.size() - StatisticsCommand.ITEMS_BY_PAGE;
+            if(StatisticsCommand.START_ITEM > allByRange.size())
+                StatisticsCommand.START_ITEM = allByRange.size() - (allByRange.size()%StatisticsCommand.ITEMS_BY_PAGE);
+            if(StatisticsCommand.START_ITEM < 0)
+                StatisticsCommand.START_ITEM = 0;
 
-            for (int i = start; i < allByRange.size() && i < start + quantity; i++) {
+            for (int i = StatisticsCommand.START_ITEM; i < allByRange.size() && i < StatisticsCommand.START_ITEM + StatisticsCommand.ITEMS_BY_PAGE; i++) {
                 fWD.add(allByRange.get(i));
             }
 

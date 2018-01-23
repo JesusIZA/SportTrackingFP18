@@ -23,6 +23,7 @@ import java.util.*;
 public class StatisticsCommand implements Command {
     private static Logger LOGGER = Logger.getLogger(StatisticsCommand.class);
     public static final int ITEMS_BY_PAGE = 5;
+    public static int START_ITEM = 0;
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("login");
@@ -54,24 +55,23 @@ public class StatisticsCommand implements Command {
                     || !EnterDataValidator.isValidDateRange(from , to)){
                 throw new DataException("Range is too long (must be less than 1 month)");
             } else {
-                int start = 0;
                 if(!Objects.isNull(request.getSession().getAttribute("startS")) &&
                         !Objects.equals(request.getSession().getAttribute("startS"), "")){
-                    start = (int) request.getSession().getAttribute("startS");
+                    START_ITEM = (int) request.getSession().getAttribute("startS");
                 }
 
                 String goPage = request.getParameter("doPage");
                 if(!Objects.isNull(goPage)) {
                     if(goPage.equals("PREV")){
-                        start -= ITEMS_BY_PAGE;
+                        START_ITEM -= ITEMS_BY_PAGE;
                     } else {
-                        start += ITEMS_BY_PAGE;
+                        START_ITEM += ITEMS_BY_PAGE;
                     }
                 }
 
                 List<StatisticsService.FoodWithDate> foods = new LinkedList<StatisticsService.FoodWithDate>();
                 StatisticsService statisticsService = StatisticsService.getService();
-                foods = statisticsService.getFoodsByDateRangeAndLogin(login, from, to, start, ITEMS_BY_PAGE);
+                foods = statisticsService.getFoodsByDateRangeAndLogin(login, from, to);
 
                 if (foods.size() == 0) {
                     Date today = Date.valueOf("2018-01-01");
@@ -82,10 +82,7 @@ public class StatisticsCommand implements Command {
                             today);
                     foods.add(fo);
                 }
-
-                if(start > foods.size()) start = foods.size() - (foods.size()%ITEMS_BY_PAGE);
-                if(start < 0) start = 0;
-                request.getSession().setAttribute("startS", start);
+                request.getSession().setAttribute("startS", START_ITEM);
 
                 request.getSession().setAttribute("from", from);
                 request.getSession().setAttribute("to", to);

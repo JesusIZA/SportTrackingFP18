@@ -98,8 +98,6 @@ public abstract class EnterDataValidator {
             start = end;
             end = temp;
         }
-        if(end.getTime() - start.getTime() > 3156000000L)
-            return false;
         return true;
     }
     public static boolean isIdExisting(int id, Entity entity) throws TransactionException {

@@ -7,6 +7,7 @@ import ua.jr.raichuk.DB.transactions.Transaction;
 import ua.jr.raichuk.Exceptions.DBException;
 import ua.jr.raichuk.Exceptions.TransactionException;
 import ua.jr.raichuk.Helpers.lists.PrintLists;
+import ua.jr.raichuk.WEB.commands.userdo.TrackingCommand;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class TrackingService {
         int calories = 0;
         int proteins = 0;
 
-        List<Food> foods = getEatenToday(login, 0, 10000);
+        List<Food> foods = getEatenToday(login , false);
         for (int i = 0; i < foods.size(); i++) {
             calories += foods.get(i).getCalories();
             proteins += foods.get(i).getProteins();
@@ -135,12 +136,10 @@ public class TrackingService {
     /**
      * return list of foods user had today
      * @param login - user login
-     * @param start - start item (for pagination)
-     * @param quantity - quantity items by page (for pagination)
      * @return List of food
      * @throws TransactionException - if has some problem with DB
      */
-    public List<Food> getEatenToday(String login, int start, int quantity) throws TransactionException {
+    public List<Food> getEatenToday(String login, boolean pagintion) throws TransactionException {
         List<Food> eatenToday = new ArrayList<Food>();
         Connection connection = Transaction.startTransaction();
         try{
@@ -152,15 +151,30 @@ public class TrackingService {
             Collections.sort(wsList);
             Collections.reverse(wsList);
 
-            if(start > wsList.size()) start = wsList.size() - (wsList.size()%quantity);
-            if(start < 0) start = 0;
-            for (int i = start; i < wsList.size() && i < start + quantity; i++) {
-                if (wsList.get(i).getDateWE().getYear() == today.getYear() &&
-                        wsList.get(i).getDateWE().getMonth() == today.getMonth() &&
-                        wsList.get(i).getDateWE().getDay() == today.getDay()) {
-                    Food food = (Food) DAOFactory.getInstance().getCRUD(new Food()).findById(wsList.get(i).getIdF(), connection);
-                    System.out.println("l=" + food);
-                    eatenToday.add(food);
+            if(pagintion) {
+                if (TrackingCommand.START_ITEM == wsList.size())
+                    TrackingCommand.START_ITEM = wsList.size() - TrackingCommand.ITEMS_BY_PAGE;
+                if (TrackingCommand.START_ITEM > wsList.size())
+                    TrackingCommand.START_ITEM = wsList.size() - (wsList.size() % TrackingCommand.ITEMS_BY_PAGE);
+                if (TrackingCommand.START_ITEM < 0)
+                    TrackingCommand.START_ITEM = 0;
+
+                for (int i = TrackingCommand.START_ITEM; i < wsList.size() && i < TrackingCommand.START_ITEM + TrackingCommand.ITEMS_BY_PAGE; i++) {
+                    if (wsList.get(i).getDateWE().getYear() == today.getYear() &&
+                            wsList.get(i).getDateWE().getMonth() == today.getMonth() &&
+                            wsList.get(i).getDateWE().getDay() == today.getDay()) {
+                        Food food = (Food) DAOFactory.getInstance().getCRUD(new Food()).findById(wsList.get(i).getIdF(), connection);
+                        eatenToday.add(food);
+                    }
+                }
+            } else {
+                for (int i = 0; i < wsList.size() && i < wsList.size(); i++) {
+                    if (wsList.get(i).getDateWE().getYear() == today.getYear() &&
+                            wsList.get(i).getDateWE().getMonth() == today.getMonth() &&
+                            wsList.get(i).getDateWE().getDay() == today.getDay()) {
+                        Food food = (Food) DAOFactory.getInstance().getCRUD(new Food()).findById(wsList.get(i).getIdF(), connection);
+                        eatenToday.add(food);
+                    }
                 }
             }
 
@@ -173,7 +187,6 @@ public class TrackingService {
         } finally {
             Transaction.endTransaction(connection);
         }
-        PrintLists.printListByRows(eatenToday);
         return eatenToday;
     }
 

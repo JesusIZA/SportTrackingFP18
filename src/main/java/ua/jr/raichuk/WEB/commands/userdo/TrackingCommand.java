@@ -24,6 +24,7 @@ import java.util.Objects;
 public class TrackingCommand implements Command {
     private static Logger LOGGER = Logger.getLogger(TrackingCommand.class);
     public static final int ITEMS_BY_PAGE = 5;
+    public static int START_ITEM = 0;
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("login");
@@ -38,31 +39,27 @@ public class TrackingCommand implements Command {
                 request.getSession().setAttribute("name", name);
             }
 
-
-            int start = 0;
             if(!Objects.isNull(request.getSession().getAttribute("startT")) &&
                     !Objects.equals(request.getSession().getAttribute("startT"), "")){
-                start = (int) request.getSession().getAttribute("startT");
+                START_ITEM = (int) request.getSession().getAttribute("startT");
             }
 
             String goPage = request.getParameter("doPage");
             if(!Objects.isNull(goPage)) {
                 if(goPage.equals("PREV")){
-                    start -= ITEMS_BY_PAGE;
+                    START_ITEM -= ITEMS_BY_PAGE;
                 } else {
-                    start += ITEMS_BY_PAGE;
+                    START_ITEM += ITEMS_BY_PAGE;
                 }
             }
 
 
             Norm norm = trackingService.getNorm(login);
             Norm forNow = trackingService.getForNow(login);
-            List<Food> eatenToday = trackingService.getEatenToday(login, start, ITEMS_BY_PAGE);
+            List<Food> eatenToday = trackingService.getEatenToday(login, true);
             String message = trackingService.getMessage(norm, forNow);
             String color = trackingService.getColor(norm, forNow);
             List<Food> foods = trackingService.getAllFoods();
-
-            PrintLists.printListByRows(eatenToday);
 
             if (eatenToday.size() == 0) {
                 Food tf = new Food();
@@ -82,10 +79,7 @@ public class TrackingCommand implements Command {
                 tf.setCarbohydrates(0.0);
                 foods.add(tf);
             }
-
-            if(start > eatenToday.size()) start = eatenToday.size() - (eatenToday.size()%ITEMS_BY_PAGE);
-            if(start < 0) start = 0;
-            request.getSession().setAttribute("startT", start);
+            request.getSession().setAttribute("startT", START_ITEM);
 
             request.setAttribute("norm", norm);
             request.setAttribute("forNow", forNow);
