@@ -35,8 +35,8 @@
     mvn clean install
     ```
     
-7. Put compiled files to foldet tomcat`s ROOT and start the tomcat
+7. Put compiled files to foldet tomcat`s ROOT and start the tomcat 
 
 ## Run
 
-Open browser and put this command 
+Open browser and put this command http://localhost:8080/sportt18/
