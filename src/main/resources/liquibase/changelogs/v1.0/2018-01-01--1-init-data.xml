@@ -1,0 +1,192 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2018-01-01--7" author="IsusRaichuk" context="initdata">
+        <insert tableName="users">
+            <column name="login" value="Admin"/>
+            <column name="password" value="12"/>
+        </insert>
+        <rollback>
+            DELETE FROM users WHERE login = 'Admin';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2018-01-01--8" author="IsusRaichuk" context="initdata">
+        <insert tableName="users">
+            <column name="login" value="Admin2"/>
+            <column name="password" value="12"/>
+        </insert>
+        <rollback>
+            DELETE FROM users WHERE login = 'Admin2';
+        </rollback>
+    </changeSet>
+    <changeSet id="2018-01-01--9" author="IsusRaichuk" context="initdata">
+        <insert tableName="users">
+            <column name="login" value="Jesus"/>
+            <column name="password" value="12"/>
+        </insert>
+        <rollback>
+            DELETE FROM users WHERE login = 'Jesus';
+        </rollback>
+    </changeSet>
+
+    <!--FOODS-->
+    <changeSet id="2018-01-01--10-1" author="IsusRaichuk" context="initdata">
+        <insert tableName="foods">
+            <column name="name" value="Cutlet in Kiev"/>
+            <column name="calories" value="123.4"/>
+            <column name="proteins" value="12.4"/>
+            <column name="fats" value="4.3"/>
+            <column name="carbohydrates" value="1.4"/>
+        </insert>
+        <rollback>
+            DELETE FROM foods WHERE name = 'Cutlet in Kiev';
+        </rollback>
+    </changeSet>
+    <changeSet id="2018-01-01--10-2" author="IsusRaichuk" context="initdata">
+        <insert tableName="foods">
+            <column name="name" value="Pasta"/>
+            <column name="calories" value="113.4"/>
+            <column name="proteins" value="7.4"/>
+            <column name="fats" value="5.3"/>
+            <column name="carbohydrates" value="1.2"/>
+        </insert>
+        <rollback>
+            DELETE FROM foods WHERE name = 'Pasta';
+        </rollback>
+    </changeSet>
+    <changeSet id="2018-01-01--10-3" author="IsusRaichuk" context="initdata">
+        <insert tableName="foods">
+            <column name="name" value="Borsch"/>
+            <column name="calories" value="89.4"/>
+            <column name="proteins" value="5.4"/>
+            <column name="fats" value="3.3"/>
+            <column name="carbohydrates" value="1.4"/>
+        </insert>
+        <rollback>
+            DELETE FROM foods WHERE name = 'Borsch';
+        </rollback>
+    </changeSet>
+
+    <!--PROFILES-->
+    <changeSet id="2018-01-01--11-1" author="IsusRaichuk" context="initdata">
+        <insert tableName="profiles">
+            <column name="name" value="Tolia"/>
+            <column name="surname" value="Fomich"/>
+            <column name="sex" value="male"/>
+            <column name="birthday" value="1996-05-12"/>
+            <column name="height" value="184"/>
+            <column name="weight" value="82"/>
+            <column name="activeTime" value="20"/>
+        </insert>
+    </changeSet>
+
+    <!--NORMS-->
+    <changeSet id="2018-01-01--12-1" author="IsusRaichuk" context="initdata">
+        <insert tableName="norms">
+            <column name="calories" value="4356"/>
+            <column name="proteins" value="399"/>
+        </insert>
+    </changeSet>
+
+    <!--LINKS-->
+    <changeSet id="2018-01-01--12-2" author="IsusRaichuk" context="initdata">
+        <insert tableName="links">
+            <column name="idU" value="3"/>
+            <column name="idP" value="1"/>
+            <column name="idN" value="1"/>
+        </insert>
+    </changeSet>
+
+    <!--WASEATEN-->
+    <changeSet id="2018-01-01--13-1" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="3"/>
+            <column name="dateWE" value="2017-05-03"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-2" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="2"/>
+            <column name="dateWE" value="2017-05-03"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-3" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="1"/>
+            <column name="dateWE" value="2017-05-05"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-4" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="3"/>
+            <column name="dateWE" value="2017-05-05"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-5" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="3"/>
+            <column name="dateWE" value="2017-05-07"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-6" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="3"/>
+            <column name="dateWE" value="2017-05-07"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-7" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="3"/>
+            <column name="dateWE" value="2017-05-07"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-8" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="1"/>
+            <column name="dateWE" value="2017-05-09"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-9" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="3"/>
+            <column name="dateWE" value="2017-05-09"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-10" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="2"/>
+            <column name="dateWE" value="2017-05-10"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-11" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="3"/>
+            <column name="dateWE" value="2017-05-10"/>
+        </insert>
+    </changeSet>
+    <changeSet id="2018-01-01--13-12" author="IsusRaichuk" context="initdata">
+        <insert tableName="waseaten">
+            <column name="idP" value="1"/>
+            <column name="idF" value="2"/>
+            <column name="dateWE" value="2017-05-11"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

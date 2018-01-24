@@ -1,0 +1,41 @@
+body {
+	background: url(../images/wallpaper1.jpg) #ccc;
+	background-attachment: fixed;
+	-webkit-background-size: cover;
+    background-size: cover;
+	padding: 0;
+    font: 16pt Arial,Tahoma, sans-serif;
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+	color: white;
+	text-shadow: 1px 1px black;
+}
+
+header {
+	background: url(../images/header.jpg) rgba(0,0,0,.7);
+	height: 358px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	text-align: left;
+}
+header img {
+	width: 800px;
+	margin: 0 15px;
+}
+
+footer .leftF {
+	margin: 10px;
+	float: left;
+}
+footer .rightF {
+	margin: 10px;
+	float: right;
+}
+
+.clear {
+	clear: both;
+}
+a {
+	text-decoration: none;
+}

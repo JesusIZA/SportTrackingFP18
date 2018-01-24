@@ -1,0 +1,186 @@
+.userPanel, .lookingPanel, .messagePanel, .eatFood, .eatenItems, .day {
+	background: rgba(0,0,0,.7);
+	border-radius: 5px;
+	margin: 10px auto;
+	padding: 0;
+}
+.name, .hrefs a, .sOut {
+	margin: 10px;
+}
+.hrefs a, .sOut {
+	float: right;
+}
+.hrefs a img, .eatFood a img {
+	width: 32px;
+	height: 32px;
+	border-radius: 3px;
+}
+.do img, .eatFood a img {
+	background: #aaa;
+}
+.do img:hover, .eatFood a img:hover {
+	background: white;
+}
+.name {
+	float: left;
+	font-size: 18pt;
+}
+.sOut .button {
+	height: 30px;
+}
+.lang img{
+	background: transparent;
+	opacity: 0.7;
+}
+.lang img:hover {
+	background: transparent;
+	opacity: 1;
+}
+.button{
+	margin: 4px;
+	background: black;
+	font-size: 11pt;
+	color: #333;
+	border: solid 3px #333;
+	border-radius: 3px;
+}
+.button:hover{
+	background: #ccc;
+	color: black;
+	border: solid 3px black;
+	cursor: pointer;
+}
+.userPanel label {
+	font-size: 14pt;
+}
+.userPanel .dateF {
+	font-size: 14pt;
+	color: white;
+	background: rgba(0,0,0,.5);
+	border-radius: 3px;
+	border: solid 3px black;
+	text-align: center;
+}
+#show {
+	height: 30px;
+}
+
+
+.lookingPanel{}
+.leftL, .rightL {
+	width: 192px;
+	margin: 10px;
+	padding: 0;
+	margin: 10px 100px;
+}
+.leftL p, .rightL p {
+	display: inline-block;
+	font-size: 16pt;
+	font-style: italic; 
+	line-height: 0; 
+}
+.lookingPanel p:nth-child(4n){
+	color: orange;
+}
+.lookingPanel p:nth-child(2n+1){
+	font-weight: bold; 
+}
+.lookingPanel p:nth-child(4n-2){
+	color: green; 
+}
+.leftL{
+	float: left;
+}
+.rightL {
+	float: right;
+}
+
+.messagePanel{
+	font-weight: bold;
+	font-style: italic;
+}
+.messagePanel p {
+	margin: 15px;
+	color: black;
+}
+
+
+.eatFood{
+
+}
+.eatFood a, .eatFood select{
+	float: left;
+	margin: 10px;
+}
+.eatFood select{
+	width:1000px;
+	font-size: 16pt;
+	color: white;
+	background: rgba(0,0,0,.5);
+	border-radius: 4px;
+	border: solid 2px black;
+	text-align: center;
+}
+#add {
+	margin: 7px;
+	height: 40px;
+	width: 100px;
+}
+
+.eatenItems{}
+.food {
+	min-height: 100px;
+}
+.food p{
+	float: left;
+	margin: 10px;
+	font-weight: bold;
+	font-style: italic;
+}
+.food span {
+	margin: 10px;
+	float: right;
+}
+.food span:nth-child(8n-3) {
+	color: red;
+}
+.food span:nth-child(8n-1) {
+	color: orange;
+}
+.food span:nth-child(8n+1) {
+	color: green;
+}
+.food span:nth-child(8n+3) {
+	color: blue;
+}
+#p1, #p2 {
+	margin-bottom: 10px;
+}
+#p1 {
+	float: left;
+	margin-left: 530px;
+}
+#p2 {
+	float: right;
+	margin-right: 530px;
+}
+.day {
+	float: right;
+	width: 1200px;
+	min-height: 100px;
+	margin: 5px 0;/*5 zverhu i znuzy po bokah auto(po centry)*/
+	border-radius: 5px;
+	box-shadow: 0 2px 2px rgba(0,0,0,.4);
+	position: relative;
+	margin-top: 40px;
+
+}
+.date {
+    position: absolute;
+    top: -35px;
+    left: 10px;
+    background: #222;
+    border-radius: 5px;
+    padding: 10px;
+    color: #eee;
+}
